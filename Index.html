@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mayckon | Portfólio de Ações Profissional</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* VARIÁVEIS DE COR */
+        :root {
+            --background-dark: #000000;
+            --card-color: #1a1a1a;
+            --primary-color: #f8f8f8; /* Branco do texto base */
+            --secondary-color: #007BFF;
+            --text-secondary: #999999;
+        }
+
+        /* ANIMAÇÕES */
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
+        }
+        
+        /* ANIMAÇÃO SHIMMER REMOVIDA */
+
+        /* RESET E TIPOGRAFIA BÁSICA */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-dark);
+            color: var(--primary-color);
+            line-height: 1.5;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 30px 10px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* CONTÊINER PARA O EFEITO DE LUZ (FUNDO ANIMADO) */
+        .particle-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 480px;
+            padding: 0 10px;
+            z-index: 10;
+            position: relative;
+        }
+
+        /* --- CABEÇALHO (PERFIL) --- */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-top: 10px;
+        }
+
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #333;
+            margin-bottom: 10px;
+        }
+
+        .profile-name {
+            font-size: 1.8em;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+
+        .profile-title {
+            font-size: 1em;
+            color: var(--text-secondary);
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        /* --- BOTÕES DE AÇÃO (Cards/Links) --- */
+        .action-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--card-color);
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 500;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); 
+        }
+
+        .action-link:hover {
+            background-color: #282828;
+            transform: translateY(-1px);
+        }
+
+        /* --- TEXTO PRINCIPAL (Efeito Shimmer Removido) --- */
+        .link-main-text {
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            /* Resetando as propriedades do shimmer */
+            color: var(--primary-color);
+            background: none;
+            -webkit-text-fill-color: initial;
+            animation: none;
+        }
+        
+        /* Ícones: voltam a ter a cor sólida normal */
+        .link-icon-text {
+            font-size: 1.2em;
+            width: 25px;
+            text-align: center;
+            color: var(--secondary-color);
+            /* Resetando as propriedades do shimmer */
+            -webkit-text-fill-color: initial;
+            background: none; 
+            animation: none;
+        }
+        
+        /* Estilos específicos para ícones */
+        .whatsapp .link-icon-text { color: #25D366; }
+        .instagram .link-icon-text {
+             /* Mantemos a aparência do gradiente para o ícone do Instagram */
+             background: -webkit-linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+             -webkit-background-clip: text;
+             -webkit-text-fill-color: transparent;
+             animation: none;
+        }
+
+        .link-icon-text i {
+             color: inherit;
+        }
+
+
+        .link-arrow {
+            font-size: 1.4em;
+            color: var(--text-secondary);
+            opacity: 0.6;
+            margin-left: 10px;
+        }
+
+        /* --- RODAPÉ --- */
+        .site-footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.8em;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="particle-background" id="particleBackground"></div>
+
+    <div class="main-container">
+        
+        <header class="profile-header">
+            <img src="https://updateordie.com/wp-content/uploads/2024/04/Thumbnails-UoD-1146x758-5.webp" alt="Sua foto de perfil" class="profile-image">
+            <h1 class="profile-name">Mayckon</h1>
+            <p class="profile-title">
+               💻 Desenvolvedor Front-end 💻
+            </p>
+        </header>
+
+        <main class="action-list">
+
+            <a href="#projects" class="action-link">
+                <span class="link-main-text">
+                    <span class="link-icon-text">🛠️</span> Ver Meus Projetos
+                </span>
+                <span class="link-arrow">↗</span>
+            </a>
+
+            <a href="mailto:seuemail@exemplo.com" class="action-link">
+                <span class="link-main-text">
+                    <span class="link-icon-text"><i class="fa-solid fa-dollar-sign"></i></span> Solicitar Orçamento Web
+                </span>
+                <span class="link-arrow">↗</span>
+            </a>
+            
+            <a href="https://wa.me/5562995679219" target="_blank" class="action-link whatsapp">
+                <span class="link-main-text">
+                    <span class="link-icon-text"><i class="fab fa-whatsapp"></i></span> Fale Comigo no WhatsApp
+                </span>
+                <span class="link-arrow">↗</span>
+            </a>
+
+            <a href="https://instagram.com/seu_usuario_aqui" target="_blank" class="action-link instagram">
+                <span class="link-main-text">
+                    <span class="link-icon-text"><i class="fab fa-instagram"></i></span> Meu Instagram
+                </span>
+                <span class="link-arrow">↗</span>
+            </a>
+
+        </main>
+
+        <footer class="site-footer">
+            <p>© Mayckon Jsr2025</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const particleBackground = document.getElementById('particleBackground');
+        const numberOfParticles = 40;
+
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            const size = Math.random() * 2 + 1;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.background = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.3})`;
+            particle.style.borderRadius = '50%';
+            particle.style.position = 'absolute';
+            
+            const startX = Math.random() * 100;
+            particle.style.left = `${startX}vw`;
+            
+            const animationDelay = Math.random() * 15;
+            const animationDuration = Math.random() * 10 + 5;
+
+            particle.style.animation = `fall ${animationDuration}s linear infinite`;
+            particle.style.animationDelay = `-${animationDelay}s`;
+            
+            particleBackground.appendChild(particle);
+            
+            particle.addEventListener('animationend', () => {
+                particle.remove();
+            });
+        }
+
+        for (let i = 0; i < numberOfParticles; i++) {
+            createParticle();
+        }
+
+        const styleSheet = document.createElement("style");
+        styleSheet.type = "text/css";
+        styleSheet.innerText = `
+            .particle {
+                animation: fall var(--duration) linear infinite;
+                z-index: 0;
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>

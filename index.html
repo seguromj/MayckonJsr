@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -15,7 +16,7 @@
         :root {
             --background-dark: #000000;
             --card-color: #1a1a1a;
-            --primary-color: #f8f8f8; /* Branco do texto base */
+            --primary-color: #f8f8f8; 
             --secondary-color: #007BFF;
             --text-secondary: #999999;
         }
@@ -27,8 +28,19 @@
                 opacity: 0;
             }
         }
-        
-        /* ANIMAÇÃO SHIMMER REMOVIDA */
+
+        /* NOVA ANIMAÇÃO: Borda Vibrante/Pulsante */
+        @keyframes vibrate-border {
+            0% {
+                box-shadow: 0 0 0 0px rgba(0, 123, 255, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 15px rgba(0, 123, 255, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0px rgba(0, 123, 255, 0);
+            }
+        }
 
         /* RESET E TIPOGRAFIA BÁSICA */
         * {
@@ -50,7 +62,6 @@
             overflow-x: hidden;
         }
 
-        /* CONTÊINER PARA O EFEITO DE LUZ (FUNDO ANIMADO) */
         .particle-background {
             position: fixed;
             top: 0;
@@ -81,8 +92,10 @@
             height: 100px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #333;
-            margin-bottom: 10px;
+            border: 3px solid var(--secondary-color);
+            margin-bottom: 15px;
+            /* Aplicação da animação */
+            animation: vibrate-border 2s infinite ease-out;
         }
 
         .profile-name {
@@ -102,7 +115,7 @@
             gap: 5px;
         }
 
-        /* --- BOTÕES DE AÇÃO (Cards/Links) --- */
+        /* --- BOTÕES DE AÇÃO --- */
         .action-link {
             display: flex;
             align-items: center;
@@ -120,54 +133,34 @@
 
         .action-link:hover {
             background-color: #282828;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
         }
 
-        /* --- TEXTO PRINCIPAL (Efeito Shimmer Removido) --- */
         .link-main-text {
             font-size: 1em;
             display: flex;
             align-items: center;
             gap: 10px;
-            /* Resetando as propriedades do shimmer */
-            color: var(--primary-color);
-            background: none;
-            -webkit-text-fill-color: initial;
-            animation: none;
         }
         
-        /* Ícones: voltam a ter a cor sólida normal */
         .link-icon-text {
             font-size: 1.2em;
             width: 25px;
             text-align: center;
             color: var(--secondary-color);
-            /* Resetando as propriedades do shimmer */
-            -webkit-text-fill-color: initial;
-            background: none; 
-            animation: none;
         }
         
-        /* Estilos específicos para ícones */
         .whatsapp .link-icon-text { color: #25D366; }
         .instagram .link-icon-text {
-             /* Mantemos a aparência do gradiente para o ícone do Instagram */
              background: -webkit-linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
              -webkit-background-clip: text;
              -webkit-text-fill-color: transparent;
-             animation: none;
         }
-
-        .link-icon-text i {
-             color: inherit;
-        }
-
 
         .link-arrow {
             font-size: 1.4em;
             color: var(--text-secondary);
             opacity: 0.6;
-            margin-left: 10px;
         }
 
         /* --- RODAPÉ --- */
@@ -186,7 +179,7 @@
     <div class="main-container">
         
         <header class="profile-header">
-            <img src="Foto-perfil.png" alt="Sua foto de perfil" class="profile-image">
+            <img src="Foto-perfil.png" alt="Mayckon" class="profile-image">
             <h1 class="profile-name">Mayckon</h1>
             <p class="profile-title">
                💻 Desenvolvedor Front-end 💻
@@ -236,7 +229,7 @@
 
         function createParticle() {
             const particle = document.createElement('div');
-            particle.classList.add('particle');
+            particle.className = 'particle';
             
             const size = Math.random() * 2 + 1;
             particle.style.width = `${size}px`;
@@ -255,25 +248,11 @@
             particle.style.animationDelay = `-${animationDelay}s`;
             
             particleBackground.appendChild(particle);
-            
-            particle.addEventListener('animationend', () => {
-                particle.remove();
-            });
         }
 
         for (let i = 0; i < numberOfParticles; i++) {
             createParticle();
         }
-
-        const styleSheet = document.createElement("style");
-        styleSheet.type = "text/css";
-        styleSheet.innerText = `
-            .particle {
-                animation: fall var(--duration) linear infinite;
-                z-index: 0;
-            }
-        `;
-        document.head.appendChild(styleSheet);
     </script>
 </body>
 </html>

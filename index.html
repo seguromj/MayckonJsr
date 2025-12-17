@@ -21,15 +21,21 @@
             --text-secondary: #999999;
         }
 
-        /* ANIMAÇÕES */
+        /* ANIMAÇÃO DE QUEDA (BACKGROUND) */
         @keyframes fall {
-            to {
-                transform: translateY(100vh) scale(0.5);
+            0% {
+                transform: translateY(-10vh);
+                opacity: 0;
+            }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% {
+                transform: translateY(100vh);
                 opacity: 0;
             }
         }
 
-        /* NOVA ANIMAÇÃO: Borda Vibrante/Pulsante */
+        /* ANIMAÇÃO DA BORDA VIBRANTE */
         @keyframes vibrate-border {
             0% {
                 box-shadow: 0 0 0 0px rgba(0, 123, 255, 0.7);
@@ -42,7 +48,7 @@
             }
         }
 
-        /* RESET E TIPOGRAFIA BÁSICA */
+        /* RESET E TIPOGRAFIA */
         * {
             margin: 0;
             padding: 0;
@@ -62,6 +68,7 @@
             overflow-x: hidden;
         }
 
+        /* ESTILO DOS CARACTERES DO FUNDO */
         .particle-background {
             position: fixed;
             top: 0;
@@ -70,6 +77,15 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
+        }
+
+        .code-particle {
+            position: absolute;
+            color: var(--secondary-color);
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            user-select: none;
+            opacity: 0;
         }
 
         .main-container {
@@ -88,13 +104,13 @@
         }
 
         .profile-image {
-            width: 100px;
-            height: 100px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid var(--secondary-color);
             margin-bottom: 15px;
-            /* Aplicação da animação */
+            /* Aplicação da vibração */
             animation: vibrate-border 2s infinite ease-out;
         }
 
@@ -102,20 +118,15 @@
             font-size: 1.8em;
             font-weight: 600;
             margin-bottom: 5px;
-            color: var(--primary-color);
         }
 
         .profile-title {
             font-size: 1em;
             color: var(--text-secondary);
             font-weight: 400;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
         }
 
-        /* --- BOTÕES DE AÇÃO --- */
+        /* --- LINKS --- */
         .action-link {
             display: flex;
             align-items: center;
@@ -123,24 +134,25 @@
             background-color: var(--card-color);
             padding: 18px 20px;
             margin-bottom: 12px;
-            border-radius: 8px;
+            border-radius: 12px;
             text-decoration: none;
             color: var(--primary-color);
             font-weight: 500;
-            transition: background-color 0.2s, transform 0.1s;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); 
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+            border: 1px solid #333;
         }
 
         .action-link:hover {
-            background-color: #282828;
-            transform: translateY(-2px);
+            background-color: #252525;
+            transform: translateY(-3px);
+            border-color: var(--secondary-color);
         }
 
         .link-main-text {
-            font-size: 1em;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
         
         .link-icon-text {
@@ -158,17 +170,17 @@
         }
 
         .link-arrow {
-            font-size: 1.4em;
+            font-size: 1.2em;
             color: var(--text-secondary);
-            opacity: 0.6;
+            opacity: 0.5;
         }
 
-        /* --- RODAPÉ --- */
         .site-footer {
             margin-top: 50px;
             text-align: center;
-            font-size: 0.8em;
+            font-size: 0.85em;
             color: var(--text-secondary);
+            letter-spacing: 1px;
         }
     </style>
 </head>
@@ -191,28 +203,28 @@
             <a href="Projetos.html" class="action-link">
                 <span class="link-main-text">
                     <span class="link-icon-text">🛠️</span> Ver Meus Projetos</span>
-                <span class="link-arrow">↗</span>
+                <span class="link-arrow"><i class="fas fa-chevron-right"></i></span>
             </a>
 
             <a href="mailto:seuemail@exemplo.com" class="action-link">
                 <span class="link-main-text">
                     <span class="link-icon-text"><i class="fa-solid fa-dollar-sign"></i></span> Solicitar Orçamento Web
                 </span>
-                <span class="link-arrow">↗</span>
+                <span class="link-arrow"><i class="fas fa-chevron-right"></i></span>
             </a>
             
             <a href="https://wa.me/5562995679219" target="_blank" class="action-link whatsapp">
                 <span class="link-main-text">
                     <span class="link-icon-text"><i class="fab fa-whatsapp"></i></span> Fale Comigo no WhatsApp
                 </span>
-                <span class="link-arrow">↗</span>
+                <span class="link-arrow"><i class="fas fa-chevron-right"></i></span>
             </a>
 
-            <a href="https://www.instagram.com/mayckonjsr?igsh=MndlOG9kdGdoYXNw" target="_blank" class="action-link instagram">
+            <a href="https://instagram.com/seu_usuario_aqui" target="_blank" class="action-link instagram">
                 <span class="link-main-text">
                     <span class="link-icon-text"><i class="fab fa-instagram"></i></span> Meu Instagram
                 </span>
-                <span class="link-arrow">↗</span>
+                <span class="link-arrow"><i class="fas fa-chevron-right"></i></span>
             </a>
 
         </main>
@@ -225,27 +237,28 @@
 
     <script>
         const particleBackground = document.getElementById('particleBackground');
-        const numberOfParticles = 40;
+        const characters = ['0', '1', '{', '}', '<', '>', '/', ';', '[', ']', '&&', '||', '!', '=>'];
+        const numberOfParticles = 50;
 
         function createParticle() {
             const particle = document.createElement('div');
-            particle.className = 'particle';
+            particle.className = 'code-particle';
             
-            const size = Math.random() * 2 + 1;
-            particle.style.width = `${size}px`;
-            particle.style.height = `${size}px`;
-            particle.style.background = `rgba(255, 255, 255, ${Math.random() * 0.5 + 0.3})`;
-            particle.style.borderRadius = '50%';
-            particle.style.position = 'absolute';
+            // Texto aleatório do array
+            particle.innerText = characters[Math.floor(Math.random() * characters.length)];
             
+            // Estilos aleatórios
+            const size = Math.random() * 12 + 10; // entre 10px e 22px
             const startX = Math.random() * 100;
-            particle.style.left = `${startX}vw`;
-            
-            const animationDelay = Math.random() * 15;
-            const animationDuration = Math.random() * 10 + 5;
+            const duration = Math.random() * 5 + 5; // entre 5s e 10s
+            const delay = Math.random() * 10;
+            const opacity = Math.random() * 0.4 + 0.1; // Sutil para não atrapalhar a leitura
 
-            particle.style.animation = `fall ${animationDuration}s linear infinite`;
-            particle.style.animationDelay = `-${animationDelay}s`;
+            particle.style.fontSize = `${size}px`;
+            particle.style.left = `${startX}vw`;
+            particle.style.animation = `fall ${duration}s linear infinite`;
+            particle.style.animationDelay = `-${delay}s`;
+            particle.style.color = `rgba(0, 123, 255, ${opacity})`;
             
             particleBackground.appendChild(particle);
         }
@@ -256,3 +269,4 @@
     </script>
 </body>
 </html>
+

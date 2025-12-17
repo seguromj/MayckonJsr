@@ -71,15 +71,31 @@
             margin-bottom: 30px;
             padding-top: 10px;
         }
+        /* Animação de vibração da borda */
+@keyframes vibrate-border {
+    0% {
+        box-shadow: 0 0 0 0px rgba(0, 123, 255, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(0, 123, 255, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0px rgba(0, 123, 255, 0);
+    }
+}
 
-        .profile-image {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid #333;
-            margin-bottom: 10px;
-        }
+/* Aplicando a animação na imagem de perfil */
+.profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--secondary-color); /* Borda sólida azul */
+    margin-bottom: 10px;
+    /* Adiciona a animação: nome, duração, tipo e loop infinito */
+    animation: vibrate-border 1.5s infinite ease-out;
+}
+
 
         .profile-name {
             font-size: 1.8em;

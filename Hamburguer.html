@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -42,7 +43,10 @@
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; backdrop-filter: blur(5px); justify-content: center; align-items: center; }
         .modal.active { display: flex; }
         .modal-content { background: #2d2d2d; border-radius: 20px; width: 90%; max-width: 550px; max-height: 90vh; overflow-y: auto; border: 2px solid var(--primary); padding: 2rem; position: relative; }
-        .close-btn { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        
+        /* Botão Voltar fixo no canto superior direito */
+        .close-btn { position: absolute; top: 1rem; right: 1.5rem; background: #1a1a1a; border: 1px solid var(--primary); color: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; z-index: 2100; transition: 0.3s; }
+        .close-btn:hover { background: var(--primary); }
 
         .cart-item { display: flex; flex-direction: column; gap: 0.8rem; background: #252525; padding: 1rem; border-radius: 15px; margin-bottom: 1rem; border: 1px solid #3d3d3d; }
         .cart-item-main { display: flex; align-items: center; gap: 1rem; }
@@ -108,7 +112,7 @@
 
     <div class="modal" id="cartModal">
         <div class="modal-content">
-            <button class="close-btn" onclick="closeCart()">&times;</button>
+            <button class="close-btn" onclick="closeCart()">Voltar</button>
             <h2 style="margin-bottom: 1.5rem; font-family: 'Bebas Neue'">Seu Pedido</h2>
             <div id="cartItems"></div>
             
@@ -135,7 +139,7 @@
 
     <div class="modal" id="deliveryModal">
         <div class="modal-content">
-            <button class="close-btn" onclick="closeDeliveryModal()">&times;</button>
+            <button class="close-btn" onclick="closeDeliveryModal()">Voltar</button>
             <h2 style="margin-bottom: 1.5rem; font-family: 'Bebas Neue'">Como deseja receber?</h2>
             
             <div class="option-card" id="opt-mesa" onclick="selectDelivery('mesa')">
@@ -185,8 +189,9 @@
             { id: 4, name: 'Batata Rústica', price: 15.00, image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400' },
             { id: 5, name: 'Onion Rings', price: 18.00, image: 'https://images.unsplash.com/photo-1639024471283-03518883512d?w=400' },
             { id: 6, name: 'Milkshake Chocolate', price: 22.00, image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=400' },
-            { id: 7, name: 'Coca-Cola Lata', price: 7.00, image: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400' },
-            { id: 8, name: 'Nuggets (6 unidades)', price: 14.00, image: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=400' }
+            { id: 7, name: 'Coca-Cola Lata 350ml', price: 7.00, image: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400' },
+            { id: 8, name: 'Coca-Cola 2L', price: 13.00, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdJOXJYfxfsigfg6r3VRtoU8NLfJVvkJ-DGOlN4PKIxQ&s=10' },
+            { id: 9, name: 'Nuggets (6 unidades)', price: 14.00, image: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=400' }
         ];
 
         let cart = JSON.parse(localStorage.getItem('burger_cart')) || [];
@@ -251,8 +256,9 @@
         function applyCoupon() {
             const code = document.getElementById('couponInput').value.toUpperCase();
             const msg = document.getElementById('couponMsg');
-            if(code === 'BURGER10') {
-                cupomAtivo = { code: 'BURGER10', discount: 0.10 };
+            // CUPOM
+            if(code === 'BURGER10') 
+                {cupomAtivo = { code: 'BURGER10', discount: 0.10 };
                 msg.style.color = '#25D366';
                 msg.innerText = "Cupom de 10% aplicado!";
             } else {

@@ -408,7 +408,7 @@
             }
 
             const totalFormatado = totalPedido.toFixed(2);
-            const linkPagamento = linksDePagamentoFixos[totalFormatado] || "Link não encontrado para este valor";
+            const linkPagamento = linksDePagamentoFixos[totalFormatado] || "Estamos gerando o Link de pagamento: 💱...";
 
             let msg = `🍔 *PEDIDO BURGER HOUSE*\n\n`;
             cart.forEach(i => msg += `• ${i.quantity}x ${i.name}\n${i.observation ? '  Obs: '+i.observation+'\n' : ''}`);

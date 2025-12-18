@@ -44,7 +44,6 @@
         .modal.active { display: flex; }
         .modal-content { background: #2d2d2d; border-radius: 20px; width: 90%; max-width: 550px; max-height: 90vh; overflow-y: auto; border: 2px solid var(--primary); padding: 2rem; position: relative; }
         
-        /* Botão Voltar fixo no canto superior direito */
         .close-btn { position: absolute; top: 1rem; right: 1.5rem; background: #1a1a1a; border: 1px solid var(--primary); color: white; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 600; z-index: 2100; transition: 0.3s; }
         .close-btn:hover { background: var(--primary); }
 
@@ -256,7 +255,6 @@
         function applyCoupon() {
             const code = document.getElementById('couponInput').value.toUpperCase();
             const msg = document.getElementById('couponMsg');
-            // CUPOM
             if(code === 'BURGER10') 
                 {cupomAtivo = { code: 'BURGER10', discount: 0.10 };
                 msg.style.color = '#25D366';
@@ -411,12 +409,12 @@
             const linkPagamento = linksDePagamentoFixos[totalFormatado] || "Estamos gerando o Link de pagamento: 💱...";
 
             let msg = `🍔 *PEDIDO BURGER HOUSE*\n\n`;
-            cart.forEach(i => msg += `• ${i.quantity}x ${i.name}\n${i.observation ? '  Obs: '+i.observation+'\n' : ''}`);
+            cart.forEach(i => msg += `• *${i.quantity}x* ${i.name}\n${i.observation ? '  _Obs: '+i.observation+'_\n' : ''}`);
             if(cupomAtivo) msg += `\n*Cupom:* ${cupomAtivo.code} (10% OFF)\n`;
             if(deliveryType === 'casa') msg += `• Frete: R$ ${FRETE_VALOR_FIXO.toFixed(2)}\n`;
             
-            msg += `\n*Total Final:* R$ ${totalFormatado}\n\n*Entrega:* ${info}`;
-            msg += `\n\n💳 *Link para Pagamento:* \n${linkPagamento}`;
+            msg += `\n*Total Final: R$ ${totalFormatado}*\n\n*Entrega:* ${info}`;
+            msg += `\n\n─── 💳 *PAGAMENTO* ───\nClique abaixo para pagar:\n${linkPagamento}`;
 
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`);
             localStorage.removeItem('burger_cart');

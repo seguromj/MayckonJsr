@@ -1,0 +1,291 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consumer - Cardápio Digital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Resets e Estilos Gerais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header e Hero Section */
+        header {
+            background: linear-gradient(180deg, #a30000 0%, #660000 100%);
+            color: white;
+            text-align: center;
+            padding: 40px 20px 100px 20px;
+            position: relative;
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .btn-white {
+            background-color: white;
+            color: #333;
+        }
+
+        .btn-outline {
+            border: 2px solid white;
+            color: white;
+        }
+
+        /* Sobreposição de Imagens (Celular e Tablet) */
+        .mockup-container {
+            position: relative;
+            max-width: 800px;
+            margin: -60px auto 40px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 450px;
+        }
+
+        .img-desktop {
+            width: 80%;
+            z-index: 1;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+
+        .img-mobile {
+            position: absolute;
+            width: 25%;
+            right: 15%;
+            bottom: -20px;
+            z-index: 2;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-radius: 20px;
+        }
+
+        /* Seção de Funcionalidades (Grid) */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .feature-item i {
+            font-size: 40px;
+            color: #00a8ff;
+            margin-bottom: 10px;
+        }
+
+        .feature-item h3 {
+            font-size: 1.2rem;
+            color: #444;
+        }
+
+        .feature-item p {
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        /* Seção Inferior Vermelha */
+        .status-section {
+            display: flex;
+            background-color: #800000;
+            color: white;
+            min-height: 400px;
+        }
+
+        .status-text {
+            flex: 1;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .status-text h2 {
+            margin-bottom: 5px;
+            font-size: 1.8rem;
+        }
+
+        .status-text p {
+            margin-bottom: 30px;
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .status-image {
+            flex: 1;
+            background-image: url('https://via.placeholder.com/600x800/darkred/white?text=Celular+na+Mão'); /* Substituir pela sua imagem */
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Botão WhatsApp Fixo */
+        .whatsapp-fixed {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .features { grid-template-columns: 1fr; }
+            .status-section { flex-direction: column; }
+            .mockup-container { height: 300px; }
+            h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">consumer</div>
+        <p>Cardápio Digital Grátis + Integração com WhatsApp e com PDV estrategico</p>
+        <h1>Cardápio Digital Grátis para Delivery</h1>
+        
+        <div class="cta-buttons">
+            <a href="https://wa.me/62995679219?text=Ol%C3%A1%2C%20eu%20quero%20*Come%C3%A7ar%20Agora%20%7C%20100%25%20Gr%C3%A1tis.*%0AComo%20funciona%3F!" class="btn btn-white">Comece Agora | 100% Grátis</a>
+            <a href="https://wa.me/62995679219?text=Ol%C3%A1%2C%20eu%20tenho%20interesse%20em%20saber%20como%20funciona%20esse%20site%20*Burguer%202*." class="btn btn-outline">Chame no WhatsApp</a>
+        </div>
+        <br>
+           <a href="Hamburguer-2.html" class="btn btn-outline">Vizualizar Site e Testar</a>
+    </header>
+
+    <div class="mockup-container">
+        <img src="IMG-Tablet.jpg" alt="Desktop View" class="img-desktop">
+        <img src="IMG-celular.jpg" alt="Mobile View" class="img-mobile">
+    </div>
+
+    <section style="text-align: center; padding: 40px 20px;">
+        <p style="color: #666; font-weight: bold; text-transform: uppercase; font-size: 12px;">+ de 300 Restaurantes já criaram seu cardápio digital</p>
+        <h2 style="font-size: 2rem; margin: 10px 0;">Cardápio Digital Grátis para restaurantes</h2>
+        <p style="max-width: 700px; margin: 0 auto; color: #555;">Somos uma equi que esta 24 horas pensando em melhorar nossos projetos a cada estante</p>
+    </section>
+
+    <section class="features">
+        <div class="feature-item">
+            <i class="fas fa-mobile-alt"></i>
+            <h3>Cardápio Digital para Delivery</h3>
+            <p><strong>Sem Taxas</strong> e com Maiores Margens de Lucro. Venda sem depender de terceiros. O seu site de delivery personalizados.</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-desktop" style="color: #e74c3c;"></i>
+            <h3>Cardápio com Sistema de Gestão Criativo</h3>
+            <p>O seu site personalizado que fazem os pedidos cairem direto no <strong>WhatsApp</strong>, fácil para copia e lançar à impressora de sua cozinha.</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-motorcycle" style="color: #f1c40f;"></i>
+            <h3>O site com função de entrega</h3>
+            <p>Oferece entrega em domicílio (Delivery), retirada rápida no Balcão ou serviço diretamente na Mesa em frente ao estabelecimento.</p>
+        </div>
+        <div class="feature-item">
+            <i class="fas fa-smile" style="color: #2ecc71;"></i>
+            <h3>Cardápio Digital com Cupons</h3>
+            <p>Cupons de desconto e pagamentos online.</p>
+        </div>
+    </section>
+
+    <section class="status-section">
+        <div class="status-text">
+            <div>
+                <h2>Pedido Confirmado.</h2>
+                <p>Apos o cliente enviar o pedido pelo whatsapp, você o informa assim que o pedido for pago pelo link de pagamento.</p>
+            </div>
+            <div>
+                <h2>Em Preparo.</h2>
+                <p>Após receber o pedido pelo whatsapp, você copiarar a mensagem e já lança no sistema de impressão. Os pedidos vão direto para a impressora da cozinha.</p>
+            </div>
+            <div>
+                <h2>Saiu para Entrega.</h2>
+                <p>Você avisa seus clientes no WhatsApp quando o pedido sai para a entrega.</p>
+            </div>
+        </div>
+        <div class="status-image">
+            </div>
+    </section>
+
+    <a href="https://wa.me/62995679219?text=Ol%C3%A1%2C%20eu%20tenho%20interesse%20em%20saber%20como%20funciona%20esse%20site%20*Burguer%202*." class="whatsapp-fixed" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // Scripts para interatividade simples
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("Site carregado com sucesso!");
+            
+            // Exemplo de animação simples ao rolar
+            const features = document.querySelectorAll('.feature-item');
+            
+            window.addEventListener('scroll', function() {
+                features.forEach(item => {
+                    const rect = item.getBoundingClientRect();
+                    if(rect.top < window.innerHeight) {
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            // Inicializando estilo para animação
+            features.forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = 'all 0.6s ease-out';
+            });
+        });
+    </script>
+</body>
+</html>

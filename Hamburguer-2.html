@@ -422,7 +422,7 @@
     setInterval(checkStoreStatus, 60000);
 
     const menuData = [
-        { id: 1, name: "Bee Burguer Especial", price: 28.90, category: "lanches", desc: "Artesanal 180g com molho de mel.", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200" },
+        { id: 1, name: "Bee Burguer Especial", price: 28.00, category: "lanches", desc: "Artesanal 180g com molho de mel.", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200" },
         { id: 2, name: "Combo Colmeia", price: 42.00, category: "lanches", desc: "Burguer duplo + Batata + Refri.", image: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=200" },
         { id: 3, name: "Batata Frita G", price: 18.00, category: "acompanhamentos", desc: "Crocante com sal e páprica.", image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200" },
         { id: 5, name: "Coca Cola Lata 350ml", price: 6.00, category: "bebidas", desc: "Coca lata 350ml", image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200" },
@@ -543,7 +543,7 @@
         const totalFormatado = total.toFixed(2);
         
         // BUSCAR LINK DE PAGAMENTO
-        let linkPagamento = linksDePagamentoFixos[totalFormatado] || "Link não disponível para este valor.";
+        let linkPagamento = linksDePagamentoFixos[totalFormatado] || "Estamos gerando o link de pagamento: 💱...";
 
         let msg = "🐝 *NOVO PEDIDO BEEFOOD*\n------------------\n";
         cart.forEach(i => msg += `*${i.quantity}x* ${i.name}\n`);

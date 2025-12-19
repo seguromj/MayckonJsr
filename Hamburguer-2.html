@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Burguer - Cardápio Digital</title>
+    <title>BeeFood - Cardápio Digital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -405,8 +405,8 @@
         const hour = now.getHours();
         const minutes = now.getMinutes();
         const currentTime = hour * 60 + minutes;
-        const openTime = 18 * 60;       //hora de abertura
-        const closeTime = 23 * 60 + 34; //hiea de fechamento
+        const openTime = 18 * 60;
+        const closeTime = 23 * 60 + 34;
 
         if (currentTime >= openTime && currentTime <= closeTime) {
             isStoreOpen = true;
@@ -422,12 +422,10 @@
     setInterval(checkStoreStatus, 60000);
 
     const menuData = [
-        { id: 1, name: "Bee Burguer Especial", price: 28.00, category: "lanches", desc: "Artesanal 180g com molho de mel.", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200" },
+        { id: 1, name: "Bee Burguer Especial", price: 28.90, category: "lanches", desc: "Artesanal 180g com molho de mel.", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200" },
         { id: 2, name: "Combo Colmeia", price: 42.00, category: "lanches", desc: "Burguer duplo + Batata + Refri.", image: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=200" },
         { id: 3, name: "Batata Frita G", price: 18.00, category: "acompanhamentos", desc: "Crocante com sal e páprica.", image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200" },
-        { id: 5, name: "Coca Cola Lata 350ml", price: 6.00, category: "bebidas", desc: "Coca lata 350ml", image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200" },
-        { id: 6, name: "Coca Cola 2L", price: 14.00, category: "bebidas", desc: "Coca 2L.", image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200" }
- 
+        { id: 5, name: "Coca Cola Lata 350ml", price: 6.00, category: "bebidas", desc: "Coca, Fanta ou Guaraná.", image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200" }
     ];
 
     function renderMenu(items) {
@@ -523,6 +521,31 @@
         document.getElementById('fields-delivery').style.display = (type === 'delivery') ? 'block' : 'none';
     }
 
+    // ==========================================
+    // FUNÇÃO PARA INTERATIVIDADE COM PDV
+    // ==========================================
+    function enviarPedidoAoPDV(dadosDoPedido) {
+        // Altere para a URL oficial da API do seu PDV
+        const URL_PDV = 'HTTPS://API.SEUPDV.COM.BR/PEDIDOS'; 
+
+        fetch(URL_PDV, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // Alguns PDVs pedem um token: 'Authorization': 'Bearer SEU_TOKEN_AQUI'
+            },
+            body: JSON.stringify(dadosDoPedido)
+        })
+        .then(response => {
+            if (response.ok) console.log("Pedido integrado ao PDV com sucesso.");
+            else console.error("Erro ao integrar com PDV.");
+        })
+        .catch(error => console.error("Falha na conexão com PDV:", error));
+    }
+    // ==========================================
+    // FINAL - FUNÇÃO PARA INTERATIVIDADE COM PDV
+    // ==========================================
+
     function sendWhatsApp() {
         checkStoreStatus();
         if(!isStoreOpen) { alert("Loja fechada."); return; }
@@ -542,16 +565,29 @@
         const total = cart.reduce((a, b) => a + (b.price * b.quantity), 0);
         const totalFormatado = total.toFixed(2);
         
-        // BUSCAR LINK DE PAGAMENTO
-        let linkPagamento = linksDePagamentoFixos[totalFormatado] || "Estamos gerando o link de pagamento: 💱...";
+        let linkPagamento = linksDePagamentoFixos[totalFormatado] || "#Estamos gerando seu link de pagamento, só um momento.";
 
-        let msg = "🐝 *NOVO PEDIDO Burguer*\n-----------------------\n";
+        // --- PREPARAÇÃO DE DADOS PARA O PDV ---
+        const dadosParaPDV = {
+            origem: "Cardápio Digital BeeFood",
+            tipo: type,
+            cliente_cpf: cpfValue,
+            itens: cart,
+            total: totalFormatado,
+            link_pago: linkPagamento
+        };
+
+        // Chamar integração PDV
+        enviarPedidoAoPDV(dadosParaPDV);
+
+        // --- MENSAGEM WHATSAPP ---
+        let msg = "🐝 *NOVO PEDIDO BEEFOOD*\n------------------\n";
         cart.forEach(i => msg += `*${i.quantity}x* ${i.name}\n`);
         msg += `\n*TOTAL: R$ ${totalFormatado}*`;
         msg += `\n\n💳 *LINK PARA PAGAMENTO:* \n${linkPagamento}\n`;
         
         if(type === 'mesa') msg += `\n📍 Mesa 5`;
-        else if(type === 'retirada') msg += `\n🏪 Retirada: Balcão\nCPF: ${cpfValue}`;
+        else if(type === 'retirada') msg += `\n🏪 Retirada\nCPF: ${cpfValue}`;
         else if(type === 'delivery') {
             msg += `\n🏠 Delivery\nCliente: ${document.getElementById('dev-nome').value}\nCPF: ${cpfValue}`;
             msg += `\nEnd: ${document.getElementById('dev-rua').value}, ${document.getElementById('dev-num').value}`;

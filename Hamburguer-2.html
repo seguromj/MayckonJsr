@@ -66,9 +66,7 @@
             font-size: 0.9em;
         }
 
-        .status-badge {
-            font-weight: bold;
-        }
+        .status-badge { font-weight: bold; }
 
         .dot {
             height: 10px;
@@ -80,13 +78,10 @@
 
         .dot-open {
             background-color: var(--success);
-            box-shadow: 0 0 0 rgba(39, 174, 96, 0.4);
             animation: pulse 1.5s infinite;
         }
 
-        .dot-closed {
-            background-color: var(--danger);
-        }
+        .dot-closed { background-color: var(--danger); }
 
         @keyframes pulse {
             0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.7); }
@@ -125,7 +120,6 @@
             cursor: pointer;
             white-space: nowrap;
             font-weight: 500;
-            transition: 0.3s;
         }
 
         .category-btn.active {
@@ -153,12 +147,6 @@
             margin-right: 15px;
         }
 
-        .item-content {
-            display: flex;
-            align-items: center;
-            flex: 1;
-        }
-
         .item-info h3 { margin: 0 0 5px 0; font-size: 1.1em; }
         .item-info p { margin: 0; color: #777; font-size: 0.85em; margin-bottom: 8px; }
         .item-price { font-weight: bold; color: #27ae60; }
@@ -170,14 +158,10 @@
             height: 40px;
             border-radius: 10px;
             cursor: pointer;
-            font-size: 1.2em;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.2s;
         }
-
-        .add-btn:active { transform: scale(0.9); }
 
         .cart-footer {
             position: fixed;
@@ -193,15 +177,8 @@
             display: none;
             justify-content: space-between;
             align-items: center;
-            cursor: pointer;
             z-index: 99;
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            animation: slideUp 0.4s ease;
-        }
-
-        @keyframes slideUp {
-            from { bottom: -100px; }
-            to { bottom: 20px; }
         }
 
         #cart-modal, #checkout-modal {
@@ -210,7 +187,6 @@
             bottom: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6);
             z-index: 1000;
-            backdrop-filter: blur(3px);
         }
 
         .modal-content {
@@ -224,7 +200,6 @@
             box-sizing: border-box;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
         }
 
         .cart-row {
@@ -238,13 +213,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
-        .cart-img {
-            width: 55px;
-            height: 55px;
-            border-radius: 10px;
-            object-fit: cover;
-            margin-right: 12px;
-        }
+        .cart-img { width: 55px; height: 55px; border-radius: 10px; object-fit: cover; margin-right: 12px; }
 
         .qty-controls {
             display: flex;
@@ -253,11 +222,10 @@
             background: #f8f9fa;
             padding: 6px 12px;
             border-radius: 10px;
-            border: 1px solid #eee;
         }
 
-        .qty-btn { border: none; background: none; font-size: 1.2em; cursor: pointer; color: var(--dark); font-weight: bold; }
-        .delete-btn { color: var(--danger); cursor: pointer; margin-left: 15px; font-size: 1.1em; }
+        .qty-btn { border: none; background: none; font-size: 1.2em; cursor: pointer; font-weight: bold; }
+        .delete-btn { color: var(--danger); cursor: pointer; margin-left: 15px; }
 
         .btn-main {
             background: var(--success);
@@ -270,7 +238,6 @@
             font-weight: bold;
             margin-top: 15px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
         }
 
         .form-group { margin-bottom: 15px; }
@@ -281,7 +248,6 @@
             border: 1px solid #ddd;
             border-radius: 12px;
             box-sizing: border-box;
-            background: #fdfdfd;
         }
         .obs { font-size: 0.8em; color: #666; margin-top: 4px; }
     </style>
@@ -311,7 +277,7 @@
 
 <div id="cart-footer" class="cart-footer" onclick="toggleCart()">
     <div><i class="fas fa-shopping-basket"></i> <span id="cart-count">0</span> itens</div>
-    <strong>Ver Carrinho: R$ <span id="cart-total-display">0.00</span></strong>
+    <strong>R$ <span id="cart-total-display">0.00</span></strong>
 </div>
 
 <div id="cart-modal">
@@ -323,7 +289,7 @@
         <div id="cart-items-list"></div>
         <div style="margin-top: 25px; padding: 15px; background: #f8f9fa; border-radius: 15px;">
             <div style="display: flex; justify-content: space-between; font-size: 1.2em; font-weight: bold;">
-                <span>Total do Pedido:</span>
+                <span>Total:</span>
                 <span style="color: var(--success)">R$ <span id="modal-total">0.00</span></span>
             </div>
         </div>
@@ -334,7 +300,7 @@
 <div id="checkout-modal">
     <div class="modal-content">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h2 style="margin:0">Entrega / Retirada</h2>
+            <h2 style="margin:0">Checkout</h2>
             <i class="fas fa-arrow-left" onclick="closeCheckout()" style="font-size: 1.5em; cursor: pointer; color: #999"></i>
         </div>
 
@@ -351,12 +317,11 @@
             <div class="form-group">
                 <label>CPF*</label>
                 <input type="text" id="cpf-retirada" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCPF(this)">
-                <p class="obs">Obrigatório para identificação na retirada</p>
             </div>
         </div>
 
         <div id="fields-delivery" style="display: none;">
-            <div class="form-group"><label>Nome Completo*</label><input type="text" id="dev-nome" placeholder="Seu nome"></div>
+            <div class="form-group"><label>Nome Completo*</label><input type="text" id="dev-nome"></div>
             <div class="form-group"><label>CPF*</label><input type="text" id="dev-cpf" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCPF(this)"></div>
             <div class="form-group"><label>Bairro*</label><input type="text" id="dev-bairro"></div>
             <div class="form-group"><label>Rua/Avenida*</label><input type="text" id="dev-rua"></div>
@@ -364,19 +329,58 @@
             <div class="form-group"><label>Complemento</label><input type="text" id="dev-comp"></div>
         </div>
 
-        <button class="btn-main" onclick="sendWhatsApp()">Enviar Pedido no WhatsApp <i class="fab fa-whatsapp"></i></button>
+        <button class="btn-main" onclick="sendWhatsApp()">Enviar Pedido <i class="fab fa-whatsapp"></i></button>
     </div>
 </div>
 
 <script>
     let isStoreOpen = false;
+    let cart = [];
+
+    // --- LINKS DE PAGAMENTO ---
+    const linksDePagamentoFixos = {
+        "1.00": "https://mpago.la/2AXmnns", "2.00": "https://mpago.la/1XRx3MU", "3.00": "https://mpago.la/2hCQdie",
+        "4.00": "https://mpago.la/21V68Ki", "5.00": "https://mpago.la/2GCnr3j", "6.00": "https://mpago.la/127jvNn",
+        "7.00": "https://mpago.la/2p6uptE", "8.00": "https://mpago.la/11j2Jua", "9.00": "https://mpago.la/1eFbxkN",
+        "10.00": "https://mpago.la/2cRxjg5", "11.00": "https://mpago.la/2LS6XMT", "12.00": "https://mpago.la/1ssdztd",
+        "13.00": "https://mpago.la/2pEQ3rJ", "14.00": "https://mpago.la/2ShtRu7", "15.00": "https://mpago.la/2MdLA1J",
+        "16.00": "https://mpago.la/122M9xy", "17.00": "https://mpago.la/1hZpFv4", "18.00": "https://mpago.la/2cvpYLD",
+        "19.00": "https://mpago.la/2fHzer1", "20.00": "https://mpago.la/2d4EhNH", "21.00": "https://mpago.la/2wtPbWJ",
+        "22.00": "https://mpago.la/1VEbPD6", "23.00": "https://mpago.la/1u4N2eZ", "24.00": "https://mpago.la/2tz3Thg",
+        "25.00": "https://mpago.la/24MoD81", "26.00": "https://mpago.la/1gQ85w8", "27.00": "https://mpago.la/2ncRJDR",
+        "28.00": "https://mpago.la/1rHT6fQ", "29.00": "https://mpago.la/1wP8yiX", "30.00": "https://mpago.la/1wEbmXA",
+        "31.00": "https://mpago.la/23tCjAH", "32.00": "https://mpago.la/1H7ACLr", "33.00": "https://mpago.la/2P1Snuu",
+        "34.00": "https://mpago.la/2dM8pXF", "35.00": "https://mpago.la/2ccdL4T", "36.00": "https://mpago.la/2LUutRb",
+        "37.00": "https://mpago.la/2SaBCdk", "38.00": "https://mpago.la/32a4XhN", "39.00": "https://mpago.la/1uK9SV6",
+        "40.00": "https://mpago.la/22fHXUh", "41.00": "https://mpago.la/2FJM5SR", "42.00": "https://mpago.la/2majQ3e",
+        "43.00": "https://mpago.la/2xuPWxe", "44.00": "https://mpago.la/1xnrgBU", "45.00": "https://mpago.la/2YxWyeN",
+        "46.00": "https://mpago.la/1C8B2Ys", "47.00": "https://mpago.la/2BHbwKb", "48.00": "https://mpago.la/2wJ79yX",
+        "49.00": "https://mpago.la/1q1CXu8", "50.00": "https://mpago.la/18PNJgh", "51.00": "https://mpago.la/29ngSEP",
+        "52.00": "https://mpago.la/1wpPNU6", "53.00": "https://mpago.la/2w4JghY", "54.00": "https://mpago.la/2wP8Zzy",
+        "55.00": "https://mpago.la/1uNDuE1", "56.00": "https://mpago.la/2HwcPeo", "57.00": "https://mpago.la/2SrqAtv",
+        "58.00": "https://mpago.la/2QddsUQ", "59.00": "https://mpago.la/1KyezXR", "60.00": "https://mpago.la/32XUkFX",
+        "61.00": "https://mpago.la/2LdRTmk", "62.00": "https://mpago.la/31yQrfo", "63.00": "https://mpago.la/2Nj6SQ3",
+        "64.00": "https://mpago.la/1AUtYYJ", "65.00": "https://mpago.la/2dJLWg6", "66.00": "https://mpago.la/2Qq6ofn",
+        "67.00": "https://mpago.la/2HSYSG8", "68.00": "https://mpago.la/2agtz9z", "69.00": "https://mpago.la/1yzPBDV",
+        "70.00": "https://mpago.la/19j57aj", "71.00": "https://mpago.la/2NN176T", "72.00": "https://mpago.la/2bgb4hq",
+        "73.00": "https://mpago.la/1Pjn7DD", "74.00": "https://mpago.la/1bnsqvS", "75.00": "https://mpago.la/1ScZwvW",
+        "76.00": "https://mpago.la/2pF999n", "77.00": "https://mpago.la/25ZZdoS", "78.00": "https://mpago.la/1df8NXT",
+        "79.00": "https://mpago.la/2c5ZvKh", "80.00": "https://mpago.la/2StD47t", "81.00": "https://mpago.la/1g2b3ky",
+        "82.00": "https://mpago.la/1EQriMV", "83.00": "https://mpago.la/2Ur8gAJ", "84.00": "https://mpago.la/12trufq",
+        "85.00": "https://mpago.la/2UkJGkF", "86.00": "https://mpago.la/1N2Zw5R", "87.00": "https://mpago.la/2QSwF7p",
+        "88.00": "https://mpago.la/2CnEweW", "89.00": "https://mpago.la/1qjGyST", "90.00": "https://mpago.la/18ZpYMG",
+        "91.00": "https://mpago.la/2jXbcve", "92.00": "https://mpago.la/1G4GRb4", "93.00": "https://mpago.la/1G4GRb4",
+        "94.00": "https://mpago.la/2L5SfaX", "95.00": "https://mpago.la/1T8HvbD", "96.00": "https://mpago.la/16i17Um",
+        "97.00": "https://mpago.la/2ULjkPj", "98.00": "https://mpago.la/2WWWm1m", "99.00": "https://mpago.la/2wQMxrn",
+        "100.00": "https://mpago.la/14fLE5V"
+    };
 
     function mascaraCPF(i) {
-        let v = i.value;
-        if(isNaN(v[v.length-1])){ i.value = v.substring(0, v.length-1); return; }
-        i.setAttribute("maxlength", "14");
-        if (v.length == 3 || v.length == 7) i.value += ".";
-        if (v.length == 11) i.value += "-";
+        let v = i.value.replace(/\D/g,"");
+        v = v.replace(/(\d{3})(\d)/,"$1.$2");
+        v = v.replace(/(\d{3})(\d)/,"$1.$2");
+        v = v.replace(/(\d{3})(\d{1,2})$/,"$1-$2");
+        i.value = v;
     }
 
     function validarCPF(cpf) {
@@ -401,9 +405,8 @@
         const hour = now.getHours();
         const minutes = now.getMinutes();
         const currentTime = hour * 60 + minutes;
-
-        const openTime = 18 * 60 + 0;
-        const closeTime = 23 * 60 + 34;
+        const openTime = 18 * 60;       //hora de abertura
+        const closeTime = 23 * 60 + 34; //hiea de fechamento
 
         if (currentTime >= openTime && currentTime <= closeTime) {
             isStoreOpen = true;
@@ -421,13 +424,11 @@
     const menuData = [
         { id: 1, name: "Bee Burguer Especial", price: 28.90, category: "lanches", desc: "Artesanal 180g com molho de mel.", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200" },
         { id: 2, name: "Combo Colmeia", price: 42.00, category: "lanches", desc: "Burguer duplo + Batata + Refri.", image: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=200" },
-        { id: 101, name: "Batata Frita G", price: 18.00, category: "acompanhamentos", desc: "Batata crocante com sal e páprica.", image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200" },
-        { id: 102, name: "Nuggets (10 unidades)", price: 15.00, category: "acompanhamentos", desc: "Frango empanado super crocante.", image: "https://images.unsplash.com/photo-1562967914-608f82629710?w=200" },
-        { id: 201, name: "Coca Cola Lata 350ml", price: 6.00, category: "bebidas", desc: "Coca, Fanta ou Guaraná.", image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200" },
-        { id: 202, name: "Suco Natural Maracujá", price: 13.00, category: "bebidas", desc: "Suco da fruta 400ml.", image: "https://www.sabornamesa.com.br/media/k2/items/cache/f8ea1c7aff521bedaac5eab4cbe3ce1e_XL.jpg" }
+        { id: 3, name: "Batata Frita G", price: 18.00, category: "acompanhamentos", desc: "Crocante com sal e páprica.", image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200" },
+        { id: 5, name: "Coca Cola Lata 350ml", price: 6.00, category: "bebidas", desc: "Coca lata 350ml", image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200" },
+        { id: 6, name: "Coca Cola 2L", price: 14.00, category: "bebidas", desc: "Coca 2L.", image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200" }
+ 
     ];
-
-    let cart = [];
 
     function renderMenu(items) {
         const container = document.getElementById('menu-container');
@@ -485,7 +486,7 @@
                     <img src="${item.image}" class="cart-img">
                     <div>
                         <div style="font-weight: 600;">${item.name}</div>
-                        <div style="color: #27ae60; font-size: 0.85em; font-weight: bold;">R$ ${(item.price * item.quantity).toFixed(2)}</div>
+                        <div style="color: #27ae60; font-size: 0.85em;">R$ ${(item.price * item.quantity).toFixed(2)}</div>
                     </div>
                 </div>
                 <div class="qty-controls">
@@ -506,10 +507,7 @@
 
     function openCheckout() {
         checkStoreStatus();
-        if(!isStoreOpen) {
-            alert("Desculpe, a loja acabou de fechar! Não é possível finalizar o pedido no momento.");
-            return;
-        }
+        if(!isStoreOpen) { alert("Loja fechada!"); return; }
         document.getElementById('cart-modal').style.display = 'none';
         document.getElementById('checkout-modal').style.display = 'block';
     }
@@ -527,39 +525,36 @@
 
     function sendWhatsApp() {
         checkStoreStatus();
-        if(!isStoreOpen) {
-            alert("O estabelecimento fechou. O pedido não pode ser enviado.");
-            return;
-        }
+        if(!isStoreOpen) { alert("Loja fechada."); return; }
 
         const type = document.getElementById('delivery-type').value;
         let cpfValue = "";
 
         if(type === 'retirada') {
             cpfValue = document.getElementById('cpf-retirada').value;
-            if(!validarCPF(cpfValue)) { alert("Por favor, insira um CPF válido para a retirada."); return; }
+            if(!validarCPF(cpfValue)) { alert("CPF inválido!"); return; }
         }
         if(type === 'delivery') {
             cpfValue = document.getElementById('dev-cpf').value;
-            if(!validarCPF(cpfValue)) { alert("Por favor, insira um CPF válido para o delivery."); return; }
+            if(!validarCPF(cpfValue)) { alert("CPF inválido!"); return; }
         }
+
+        const total = cart.reduce((a, b) => a + (b.price * b.quantity), 0);
+        const totalFormatado = total.toFixed(2);
+        
+        // BUSCAR LINK DE PAGAMENTO
+        let linkPagamento = linksDePagamentoFixos[totalFormatado] || "Link não disponível para este valor.";
 
         let msg = "🐝 *NOVO PEDIDO BEEFOOD*\n------------------\n";
         cart.forEach(i => msg += `*${i.quantity}x* ${i.name}\n`);
-        msg += `\n*TOTAL: R$ ${cart.reduce((a, b) => a + (b.price * b.quantity), 0).toFixed(2)}*\n`;
+        msg += `\n*TOTAL: R$ ${totalFormatado}*`;
+        msg += `\n\n💳 *LINK PARA PAGAMENTO:* \n${linkPagamento}\n`;
         
-        if(type === 'mesa') msg += `\n📍 *Mesa 5*`;
-        if(type === 'retirada') {
-            msg += `\n🏪 *Retirar no Balcão*`;
-            msg += `\nCPF: ${cpfValue}`;
-        }
-        if(type === 'delivery') {
-            msg += `\n🏠 *Delivery*`;
-            msg += `\nCliente: ${document.getElementById('dev-nome').value}`;
-            msg += `\nCPF: ${cpfValue}`;
-            msg += `\nEndereço: ${document.getElementById('dev-rua').value}, ${document.getElementById('dev-num').value}`;
-            msg += `\nBairro: ${document.getElementById('dev-bairro').value}`;
-            msg += `\nComp: ${document.getElementById('dev-comp').value}`;
+        if(type === 'mesa') msg += `\n📍 Mesa 5`;
+        else if(type === 'retirada') msg += `\n🏪 Retirada\nCPF: ${cpfValue}`;
+        else if(type === 'delivery') {
+            msg += `\n🏠 Delivery\nCliente: ${document.getElementById('dev-nome').value}\nCPF: ${cpfValue}`;
+            msg += `\nEnd: ${document.getElementById('dev-rua').value}, ${document.getElementById('dev-num').value}`;
         }
 
         window.open(`https://wa.me/5562995679219?text=${encodeURIComponent(msg)}`);

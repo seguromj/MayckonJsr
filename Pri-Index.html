@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeeFood - Cardápio Digital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #FFD700;
+            --dark: #1a1a1a;
+            --light: #fff;
+            --gray: #f8f9fa;
+            --danger: #ff4d4d;
+            --success: #27ae60;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--gray);
+            color: var(--dark);
+        }
+
+        header {
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr-mXIsG4tiqdA3ik5uQhRn5EMZSvsyXlQ6T-Wgy148roOvQ7O-2CiRwzX&s=10');
+            background-size: cover;
+            background-position: center;
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            position: relative;
+            margin-bottom: 50px; 
+        }
+
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 5px solid var(--gray);
+            object-fit: cover;
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            z-index: 2;
+        }
+
+        header h1 {
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            margin-top: 0;
+        }
+
+        header p {
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+        }
+
+        .store-info {
+            text-align: center;
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 0.9em;
+        }
+
+        .status-badge {
+            font-weight: bold;
+        }
+
+        .dot {
+            height: 10px;
+            width: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .dot-open {
+            background-color: var(--success);
+            box-shadow: 0 0 0 rgba(39, 174, 96, 0.4);
+            animation: pulse 1.5s infinite;
+        }
+
+        .dot-closed {
+            background-color: var(--danger);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(39, 174, 96, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(39, 174, 96, 0); }
+        }
+
+        .insta-link {
+            color: #E1306C;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1em;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 0 15px;
+            padding-bottom: 100px;
+        }
+
+        .categories {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0;
+            scrollbar-width: none;
+            margin-top: 15px;
+        }
+
+        .category-btn {
+            background: var(--light);
+            border: 1px solid #ddd;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .category-btn.active {
+            background: var(--dark);
+            color: var(--primary);
+            border-color: var(--dark);
+        }
+
+        .menu-item {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .item-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .cart-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .item-content {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .item-info h3 { margin: 0 0 5px 0; font-size: 1.1em; }
+        .item-info p { margin: 0; color: #777; font-size: 0.85em; margin-bottom: 8px; }
+        .item-price { font-weight: bold; color: #27ae60; }
+
+        .add-btn {
+            background: var(--primary);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-footer {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 500px;
+            background: var(--dark);
+            color: var(--light);
+            padding: 15px 25px;
+            border-radius: 15px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            z-index: 99;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        #cart-modal, #checkout-modal {
+            display: none;
+            position: fixed;
+            bottom: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            bottom: 0;
+            background: white;
+            width: 100%;
+            border-top-left-radius: 25px;
+            border-top-right-radius: 25px;
+            padding: 25px;
+            box-sizing: border-box;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .cart-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+
+        .qty-btn { border: none; background: none; font-size: 1.1em; cursor: pointer; }
+        .delete-btn { color: var(--danger); cursor: pointer; margin-left: 15px; }
+
+        .btn-main {
+            background: #27ae60;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 18px;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9em; }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+        .obs { font-size: 0.8em; color: #666; margin-top: 4px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Hambúrgue</h1>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9uqXczkmobvK2-KkVB8TIbETjISMwLMKfmJXWKdfunmyjVlwGNBhOnQc&s=10" alt="Perfil" class="profile-img">
+</header>
+
+<div class="container">
+    <div class="store-info">
+        <span><i class="fas fa-map-marker-alt"></i> Nossa localização - Anápolis</span>
+        <span id="store-status" class="status-badge"></span>
+        <a href="#" class="insta-link"><i class="fab fa-instagram"></i> @Seu_insta</a>
+    </div>
+
+    <div class="categories">
+        <button class="category-btn active" onclick="filterMenu('all')">Todos</button>
+        <button class="category-btn" onclick="filterMenu('lanches')">Lanches</button>
+        <button class="category-btn" onclick="filterMenu('bebidas')">Bebidas</button>
+    </div>
+    <div id="menu-container"></div>
+</div>
+
+<div id="cart-footer" class="cart-footer" onclick="toggleCart()">
+    <div><i class="fas fa-shopping-basket"></i> <span id="cart-count">0</span> itens</div>
+    <strong>R$ <span id="cart-total-display">0.00</span></strong>
+</div>
+
+<div id="cart-modal">
+    <div class="modal-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2>Meu Carrinho</h2>
+            <i class="fas fa-times" onclick="toggleCart()" style="font-size: 1.5em; cursor: pointer;"></i>
+        </div>
+        <div id="cart-items-list"></div>
+        <div style="margin-top: 20px; display: flex; justify-content: space-between; font-size: 1.2em; font-weight: bold;">
+            <span>Total:</span>
+            <span>R$ <span id="modal-total">0.00</span></span>
+        </div>
+        <button class="btn-main" onclick="openCheckout()">finalizar comprar</button>
+    </div>
+</div>
+
+<div id="checkout-modal">
+    <div class="modal-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2>Como deseja receber?</h2>
+            <i class="fas fa-arrow-left" onclick="closeCheckout()" style="font-size: 1.5em; cursor: pointer;"></i>
+        </div>
+
+        <div class="form-group">
+            <select id="delivery-type" onchange="toggleFields()">
+                <option value="mesa">Mesa 5</option>
+                <option value="retirada">Retirar no Balcão</option>
+                <option value="delivery">Delivery em Casa</option>
+            </select>
+        </div>
+
+        <div id="fields-retirada" style="display: none;">
+            <div class="form-group">
+                <label>CPF*</label>
+                <input type="text" id="cpf-retirada" placeholder="Ex: 000.000.000-00">
+                <p class="obs">CPF para retirar seu pedido</p>
+            </div>
+        </div>
+
+        <div id="fields-delivery" style="display: none;">
+            <div class="form-group"><label>Nome*</label><input type="text" id="dev-nome"></div>
+            <div class="form-group"><label>CPF*</label><input type="text" id="dev-cpf"></div>
+            <div class="form-group"><label>Bairro*</label><input type="text" id="dev-bairro"></div>
+            <div class="form-group"><label>Rua/Avenida*</label><input type="text" id="dev-rua"></div>
+            <div class="form-group"><label>Número/Quadra e Lote*</label><input type="text" id="dev-num"></div>
+            <div class="form-group"><label>Complemento</label><input type="text" id="dev-comp"></div>
+        </div>
+
+        <button class="btn-main" onclick="sendWhatsApp()">Enviar Pedido <i class="fab fa-whatsapp"></i></button>
+    </div>
+</div>
+
+<script>
+    let isStoreOpen = false;
+
+    // SCRIPT DE HORÁRIO COM ATUALIZAÇÃO AUTOMÁTICA
+    function checkStoreStatus() {
+        const statusElement = document.getElementById('store-status');
+        const now = new Date();
+        const hour = now.getHours();
+        const minutes = now.getMinutes();
+        const currentTime = hour * 60 + minutes;
+
+        // Horários: Abre 18:00 (1080 min) e Fecha 23:30 (1410 min)
+        const openTime = 18 * 60 + 0;
+        const closeTime = 23 * 60 + 34;
+
+        if (currentTime >= openTime && currentTime <= closeTime) {
+            isStoreOpen = true;
+            statusElement.innerHTML = '<span class="dot dot-open"></span> Aberto agora';
+            statusElement.style.color = "var(--success)";
+        } else {
+            isStoreOpen = false;
+            statusElement.innerHTML = '<span class="dot dot-closed"></span> Fechado agora';
+            statusElement.style.color = "var(--danger)";
+        }
+    }
+
+    // Atualiza o status a cada 60 segundos (sem recarregar)
+    setInterval(checkStoreStatus, 60000);
+
+    const menuData = [
+        { id: 1, name: "Bee Burguer Especial", price: 28.90, category: "lanches", desc: "Artesanal 180g com molho de mel.", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200" },
+        { id: 2, name: "Combo Colmeia", price: 42.00, category: "lanches", desc: "Burguer duplo + Batata + Refri.", image: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=200" },
+        { id: 3, name: "Coca Cola Lata 350ml", price: 6.00, category: "bebidas", desc: "Coca, Fanta ou Guaraná.", image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200" },
+        { id: 4, name: "Coca Cala 2L", price: 13.00, category: "bebidas", desc: "Coca Cala 2L", image: "https://fortatacadista.vteximg.com.br/arquivos/ids/299392-800-800/2301822_7894900027013_BEB-REFRIG.COCA-COLA-2L-PET..jpg?v=637764859239570000" }
+    ];
+
+    let cart = [];
+
+    function renderMenu(items) {
+        const container = document.getElementById('menu-container');
+        container.innerHTML = items.map(item => `
+            <div class="menu-item">
+                <div class="item-content">
+                    <img src="${item.image}" class="item-img">
+                    <div class="item-info">
+                        <h3>${item.name}</h3>
+                        <p>${item.desc}</p>
+                        <span class="item-price">R$ ${item.price.toFixed(2)}</span>
+                    </div>
+                </div>
+                <button class="add-btn" onclick="addToCart(${item.id})"><i class="fas fa-plus"></i></button>
+            </div>
+        `).join('');
+    }
+
+    function addToCart(id) {
+        const item = cart.find(i => i.id === id);
+        if (item) item.quantity++;
+        else cart.push({ ...menuData.find(p => p.id === id), quantity: 1 });
+        updateUI();
+    }
+
+    function changeQuantity(id, delta) {
+        const item = cart.find(i => i.id === id);
+        if (item) {
+            item.quantity += delta;
+            if (item.quantity <= 0) cart = cart.filter(i => i.id !== id);
+        }
+        updateUI();
+        renderCartItems();
+    }
+
+    function removeFromCart(id) {
+        cart = cart.filter(i => i.id !== id);
+        updateUI();
+        renderCartItems();
+        if (cart.length === 0) toggleCart();
+    }
+
+    function updateUI() {
+        const total = cart.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0);
+        document.getElementById('cart-footer').style.display = cart.length > 0 ? 'flex' : 'none';
+        document.getElementById('cart-count').innerText = cart.reduce((a, b) => a + b.quantity, 0);
+        document.getElementById('cart-total-display').innerText = total.toFixed(2);
+        document.getElementById('modal-total').innerText = total.toFixed(2);
+    }
+
+    function renderCartItems() {
+        document.getElementById('cart-items-list').innerHTML = cart.map(item => `
+            <div class="cart-row">
+                <div style="display: flex; align-items: center; flex: 1;">
+                    <img src="${item.image}" class="cart-img">
+                    <div>
+                        <div style="font-weight: 600;">${item.name}</div>
+                        <div style="color: #27ae60; font-size: 0.85em;">R$ ${(item.price * item.quantity).toFixed(2)}</div>
+                    </div>
+                </div>
+                <div class="qty-controls">
+                    <button class="qty-btn" onclick="changeQuantity(${item.id}, -1)">-</button>
+                    <span>${item.quantity}</span>
+                    <button class="qty-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
+                </div>
+                <i class="fas fa-trash-alt delete-btn" onclick="removeFromCart(${item.id})"></i>
+            </div>
+        `).join('');
+    }
+
+    function toggleCart() {
+        const m = document.getElementById('cart-modal');
+        if (m.style.display === 'block') m.style.display = 'none';
+        else { renderCartItems(); m.style.display = 'block'; }
+    }
+
+    function openCheckout() {
+        // Bloqueio de segurança: não deixa abrir o checkout se fechar no meio do processo
+        checkStoreStatus();
+        if(!isStoreOpen) {
+            alert("Desculpe, a loja acabou de fechar! Não é possível finalizar o pedido no momento.");
+            return;
+        }
+        document.getElementById('cart-modal').style.display = 'none';
+        document.getElementById('checkout-modal').style.display = 'block';
+    }
+
+    function closeCheckout() {
+        document.getElementById('checkout-modal').style.display = 'none';
+        document.getElementById('cart-modal').style.display = 'block';
+    }
+
+    function toggleFields() {
+        const type = document.getElementById('delivery-type').value;
+        document.getElementById('fields-retirada').style.display = (type === 'retirada') ? 'block' : 'none';
+        document.getElementById('fields-delivery').style.display = (type === 'delivery') ? 'block' : 'none';
+    }
+
+    function sendWhatsApp() {
+        checkStoreStatus();
+        if(!isStoreOpen) {
+            alert("O estabelecimento fechou. O pedido não pode ser enviado.");
+            return;
+        }
+
+        const type = document.getElementById('delivery-type').value;
+        let msg = "🐝 *NOVO PEDIDO BEEFOOD*\n------------------\n";
+        cart.forEach(i => msg += `${i.quantity}x ${i.name}\n`);
+        msg += `\n*TOTAL: R$ ${cart.reduce((a, b) => a + (b.price * b.quantity), 0).toFixed(2)}*\n`;
+        
+        if(type === 'mesa') msg += `\n*OPÇÃO:* Mesa 5`;
+        if(type === 'retirada') {
+            msg += `\n*OPÇÃO:* Retirar no Balcão`;
+            msg += `\nCPF: ${document.getElementById('cpf-retirada').value}`;
+        }
+        if(type === 'delivery') {
+            msg += `\n*OPÇÃO:* Delivery em Casa`;
+            msg += `\nCliente: ${document.getElementById('dev-nome').value}`;
+            msg += `\nCPF: ${document.getElementById('dev-cpf').value}`;
+            msg += `\nEndereço: ${document.getElementById('dev-rua').value}, ${document.getElementById('dev-num').value}`;
+            msg += `\nBairro: ${document.getElementById('dev-bairro').value}`;
+            msg += `\nComp: ${document.getElementById('dev-comp').value}`;
+        }
+
+        window.open(`https://wa.me/5500999999999?text=${encodeURIComponent(msg)}`);
+    }
+
+    function filterMenu(category) {
+        document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        const filtered = category === 'all' ? menuData : menuData.filter(i => i.category === category);
+        renderMenu(filtered);
+    }
+
+    // Inicialização
+    renderMenu(menuData);
+    checkStoreStatus();
+</script>
+</body>
+</html>

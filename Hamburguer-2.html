@@ -250,6 +250,35 @@
             box-sizing: border-box;
         }
         .obs { font-size: 0.8em; color: #666; margin-top: 4px; }
+
+        .coupon-section {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        .coupon-section input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+        .btn-coupon {
+            padding: 10px 15px;
+            background: var(--dark);
+            color: var(--primary);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-remove-coupon {
+            background: var(--danger);
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -287,10 +316,29 @@
             <i class="fas fa-times" onclick="toggleCart()" style="font-size: 1.5em; cursor: pointer; color: #999"></i>
         </div>
         <div id="cart-items-list"></div>
+        
+        <div class="coupon-section">
+            <input type="text" id="coupon-input" placeholder="Cupom de desconto">
+            <button class="btn-coupon" id="apply-btn" onclick="applyCoupon()">Aplicar</button>
+            <button class="btn-remove-coupon" id="remove-btn" onclick="removeCoupon()" style="display: none;"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="coupon-msg" style="font-size: 0.8em; margin-top: 5px;"></div>
+
         <div style="margin-top: 25px; padding: 15px; background: #f8f9fa; border-radius: 15px;">
             <div style="display: flex; justify-content: space-between; font-size: 1.2em; font-weight: bold;">
                 <span>Total:</span>
                 <span style="color: var(--success)">R$ <span id="modal-total">0.00</span></span>
+            </div>
+            <div id="discount-display" style="display: none; justify-content: space-between; color: var(--danger); font-size: 0.9em; margin-top: 5px;">
+                <span>Desconto:</span>
+                <span>- R$ <span id="modal-discount">0.00</span></span>
+            </div>
+            <div id="delivery-tax-display" style="display: none; justify-content: space-between; color: #666; font-size: 0.9em; margin-top: 5px;">
+                <span>Taxa de Entrega:</span>
+                <span>+ R$ 10.00</span>
+            </div>
+            <div style="margin-top: 10px; border-top: 1px dashed #ccc; padding-top: 10px; font-size: 0.85em; color: #666;">
+                <i class="fas fa-motorcycle"></i> Taxa de entrega fixa: <strong>R$ 10,00</strong> (somente para Delivery)
             </div>
         </div>
         <button class="btn-main" onclick="openCheckout()">Finalizar Compra</button>
@@ -336,8 +384,16 @@
 <script>
     let isStoreOpen = false;
     let cart = [];
+    let discountValue = 0;
+    let appliedCoupon = "";
+    const TAXA_ENTREGA = 10.00;
 
-    // --- LINKS DE PAGAMENTO ---
+    const cuponsValidos = {
+        "BEE10": 0.10,
+        "BEE5": 5.00,
+        "PRIMEIRACOMPRA": 0.15
+    };
+
     const linksDePagamentoFixos = {
         "1.00": "https://mpago.la/2AXmnns", "2.00": "https://mpago.la/1XRx3MU", "3.00": "https://mpago.la/2hCQdie",
         "4.00": "https://mpago.la/21V68Ki", "5.00": "https://mpago.la/2GCnr3j", "6.00": "https://mpago.la/127jvNn",
@@ -469,12 +525,74 @@
         if (cart.length === 0) toggleCart();
     }
 
+    function applyCoupon() {
+        const input = document.getElementById('coupon-input').value.toUpperCase().trim();
+        const msg = document.getElementById('coupon-msg');
+        
+        if (cuponsValidos[input]) {
+            appliedCoupon = input;
+            msg.innerText = "Cupom aplicado!";
+            msg.style.color = "var(--success)";
+            document.getElementById('apply-btn').style.display = 'none';
+            document.getElementById('remove-btn').style.display = 'block';
+            document.getElementById('coupon-input').disabled = true;
+            updateUI();
+        } else {
+            appliedCoupon = "";
+            discountValue = 0;
+            msg.innerText = "Cupom inválido.";
+            msg.style.color = "var(--danger)";
+            updateUI();
+        }
+    }
+
+    function removeCoupon() {
+        appliedCoupon = "";
+        discountValue = 0;
+        document.getElementById('coupon-input').value = "";
+        document.getElementById('coupon-input').disabled = false;
+        document.getElementById('apply-btn').style.display = 'block';
+        document.getElementById('remove-btn').style.display = 'none';
+        document.getElementById('coupon-msg').innerText = "";
+        updateUI();
+    }
+
     function updateUI() {
-        const total = cart.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0);
+        let subtotal = cart.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0);
+        
+        if (appliedCoupon) {
+            let val = cuponsValidos[appliedCoupon];
+            if (val <= 1) discountValue = subtotal * val;
+            else discountValue = val;
+        } else {
+            discountValue = 0;
+        }
+
+        const deliveryType = document.getElementById('delivery-type').value;
+        let totalFinal = subtotal - discountValue;
+        
+        // SOMA A TAXA NO TOTAL SE FOR DELIVERY
+        if(deliveryType === 'delivery') {
+            totalFinal += TAXA_ENTREGA;
+            document.getElementById('delivery-tax-display').style.display = 'flex';
+        } else {
+            document.getElementById('delivery-tax-display').style.display = 'none';
+        }
+
+        if(totalFinal < 0) totalFinal = 0;
+
         document.getElementById('cart-footer').style.display = cart.length > 0 ? 'flex' : 'none';
         document.getElementById('cart-count').innerText = cart.reduce((a, b) => a + b.quantity, 0);
-        document.getElementById('cart-total-display').innerText = total.toFixed(2);
-        document.getElementById('modal-total').innerText = total.toFixed(2);
+        document.getElementById('cart-total-display').innerText = totalFinal.toFixed(2);
+        document.getElementById('modal-total').innerText = totalFinal.toFixed(2);
+        
+        const discDisplay = document.getElementById('discount-display');
+        if(discountValue > 0) {
+            discDisplay.style.display = 'flex';
+            document.getElementById('modal-discount').innerText = discountValue.toFixed(2);
+        } else {
+            discDisplay.style.display = 'none';
+        }
     }
 
     function renderCartItems() {
@@ -519,21 +637,15 @@
         const type = document.getElementById('delivery-type').value;
         document.getElementById('fields-retirada').style.display = (type === 'retirada') ? 'block' : 'none';
         document.getElementById('fields-delivery').style.display = (type === 'delivery') ? 'block' : 'none';
+        updateUI(); // ATUALIZA O TOTAL QUANDO MUDA O TIPO DE ENTREGA
     }
 
-    // ==========================================
-    // FUNÇÃO PARA INTERATIVIDADE COM PDV
-    // ==========================================
     function enviarPedidoAoPDV(dadosDoPedido) {
-        // Altere para a URL oficial da API do seu PDV
         const URL_PDV = 'HTTPS://API.SEUPDV.COM.BR/PEDIDOS'; 
 
         fetch(URL_PDV, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                // Alguns PDVs pedem um token: 'Authorization': 'Bearer SEU_TOKEN_AQUI'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dadosDoPedido)
         })
         .then(response => {
@@ -542,9 +654,6 @@
         })
         .catch(error => console.error("Falha na conexão com PDV:", error));
     }
-    // ==========================================
-    // FINAL - FUNÇÃO PARA INTERATIVIDADE COM PDV
-    // ==========================================
 
     function sendWhatsApp() {
         checkStoreStatus();
@@ -562,27 +671,35 @@
             if(!validarCPF(cpfValue)) { alert("CPF inválido!"); return; }
         }
 
-        const total = cart.reduce((a, b) => a + (b.price * b.quantity), 0);
-        const totalFormatado = total.toFixed(2);
+        const subtotal = cart.reduce((a, b) => a + (b.price * b.quantity), 0);
+        let totalFinal = subtotal - discountValue;
+        if(type === 'delivery') totalFinal += TAXA_ENTREGA;
+        
+        const totalFormatado = totalFinal.toFixed(2);
         
         let linkPagamento = linksDePagamentoFixos[totalFormatado] || "#Estamos gerando seu link de pagamento, só um momento.";
 
-        // --- PREPARAÇÃO DE DADOS PARA O PDV ---
         const dadosParaPDV = {
             origem: "Cardápio Digital BeeFood",
             tipo: type,
             cliente_cpf: cpfValue,
             itens: cart,
             total: totalFormatado,
+            desconto: discountValue.toFixed(2),
+            cupom: appliedCoupon,
+            taxa_entrega: type === 'delivery' ? 10.00 : 0,
             link_pago: linkPagamento
         };
 
-        // Chamar integração PDV
         enviarPedidoAoPDV(dadosParaPDV);
 
-        // --- MENSAGEM WHATSAPP ---
         let msg = "🐝 *NOVO PEDIDO BEEFOOD*\n------------------\n";
         cart.forEach(i => msg += `*${i.quantity}x* ${i.name}\n`);
+        
+        msg += `\nSubtotal: R$ ${subtotal.toFixed(2)}`;
+        if(discountValue > 0) msg += `\nCupom: ${appliedCoupon} (-R$ ${discountValue.toFixed(2)})`;
+        if(type === 'delivery') msg += `\nTaxa Entrega: R$ 10.00`;
+
         msg += `\n*TOTAL: R$ ${totalFormatado}*`;
         msg += `\n\n💳 *LINK PARA PAGAMENTO:* \n${linkPagamento}\n`;
         

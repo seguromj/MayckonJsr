@@ -187,6 +187,22 @@
             .mockup-container { height: 300px; }
             h1 { font-size: 1.8rem; }
         }
+
+
+
+        /* Estilo para manter o vídeo no formato vertical de celular */
+.video-wrapper {
+    width: 100%;
+    margin: 25px 0;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    aspect-ratio: 9 / 16; /* Proporção do YouTube Shorts */
+    max-width: 300px; /* Tamanho ideal para não ocupar a tela toda no PC */
+    margin-left: auto;
+    margin-right: auto;
+}
+        
     </style>
 </head>
 <body>
@@ -215,6 +231,18 @@
         <p style="max-width: 700px; margin: 0 auto; color: #555;">Somos uma equi que esta 24 horas pensando em melhorar nossos projetos a cada estante</p>
     </section>
 
+    <div class="video-wrapper">
+    <iframe width="100%" height="100%" 
+        src="https://www.youtube.com/embed/x4tu0BDnnco?autoplay=1&mute=1&loop=1&playlist=x4tu0BDnnco&controls=0&rel=0" 
+        title="Cardápio Digital BeeFood" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+        allowfullscreen>
+    </iframe>
+</div>
+
+
+    
     <section class="features">
         <div class="feature-item">
             <i class="fas fa-mobile-alt"></i>

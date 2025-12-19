@@ -406,15 +406,17 @@
             }
 
             const totalFormatado = totalPedido.toFixed(2);
-            const linkPagamento = linksDePagamentoFixos[totalFormatado] || "Estamos gerando o Link de pagamento: 💱...";
+            const linkPagamento = linksDePagamentoFixos[totalFormatado] || "Link não encontrado.";
 
+            // Formatando a mensagem para parecer um botão visual de texto
             let msg = `🍔 *PEDIDO BURGER HOUSE*\n\n`;
             cart.forEach(i => msg += `• *${i.quantity}x* ${i.name}\n${i.observation ? '  _Obs: '+i.observation+'_\n' : ''}`);
             if(cupomAtivo) msg += `\n*Cupom:* ${cupomAtivo.code} (10% OFF)\n`;
             if(deliveryType === 'casa') msg += `• Frete: R$ ${FRETE_VALOR_FIXO.toFixed(2)}\n`;
             
-            msg += `\n*Total Final: R$ ${totalFormatado}*\n\n*Entrega:* ${info}`;
-            msg += `\n\n─── 💳 *PAGAMENTO* ───\nClique abaixo para pagar:\n${linkPagamento}`;
+            msg += `\n*Total Final: R$ ${totalFormatado}*\n\n*Entrega:* ${info}\n\n`;
+            msg += `*PAGAR AGORA:* 💳\n`;
+            msg += `👉 ${linkPagamento}\n`;
 
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`);
             localStorage.removeItem('burger_cart');

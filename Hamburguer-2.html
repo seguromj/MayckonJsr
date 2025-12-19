@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BeeFood - Cardápio Digital</title>
+    <title>Burguer - Cardápio Digital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -545,13 +545,13 @@
         // BUSCAR LINK DE PAGAMENTO
         let linkPagamento = linksDePagamentoFixos[totalFormatado] || "Estamos gerando o link de pagamento: 💱...";
 
-        let msg = "🐝 *NOVO PEDIDO BEEFOOD*\n------------------\n";
+        let msg = "🐝 *NOVO PEDIDO Burguer*\n-----------------------\n";
         cart.forEach(i => msg += `*${i.quantity}x* ${i.name}\n`);
         msg += `\n*TOTAL: R$ ${totalFormatado}*`;
         msg += `\n\n💳 *LINK PARA PAGAMENTO:* \n${linkPagamento}\n`;
         
         if(type === 'mesa') msg += `\n📍 Mesa 5`;
-        else if(type === 'retirada') msg += `\n🏪 Retirada\nCPF: ${cpfValue}`;
+        else if(type === 'retirada') msg += `\n🏪 Retirada: Balcão\nCPF: ${cpfValue}`;
         else if(type === 'delivery') {
             msg += `\n🏠 Delivery\nCliente: ${document.getElementById('dev-nome').value}\nCPF: ${cpfValue}`;
             msg += `\nEnd: ${document.getElementById('dev-rua').value}, ${document.getElementById('dev-num').value}`;

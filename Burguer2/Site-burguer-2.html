@@ -655,15 +655,15 @@
 
     function enviarParaPlanilha(dados) {
         // SUBSTITUA OS IDs (entry.XXXXX) PELOS IDs DO SEU GOOGLE FORMS
-        const FORM_URL = "SUA_URL_DO_GOOGLE_FORMS/formResponse";
+        const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScCadaja6iLfwVL7fH6aVs_iXTJpZgBREY-Ju98Zqg3KKslWg/formResponse";
         const formData = new FormData();
         
-        formData.append("entry.123456789", dados.tipo); // ID Tipo Entrega
-        formData.append("entry.111222333", dados.cliente_nome || "N/A"); // ID Nome
-        formData.append("entry.444555666", dados.cliente_cpf); // ID CPF
-        formData.append("entry.777888999", dados.endereco_completo || "N/A"); // ID Endereço
-        formData.append("entry.000111222", dados.resumo_itens); // ID Pedido
-        formData.append("entry.333444555", dados.total); // ID Total
+        formData.append("entry.1697072560", dados.tipo); // ID Tipo Entrega
+        formData.append("entry.1278482765", dados.cliente_nome || "N/A"); // ID Nome
+        formData.append("entry.143126943", dados.cliente_cpf); // ID CPF
+        formData.append("entry.1878038120", dados.endereco_completo || "N/A"); // ID Endereço
+        formData.append("entry.1399400806", dados.resumo_itens); // ID Pedido
+        formData.append("entry.764712754", dados.total); // ID Total
 
         fetch(FORM_URL, {
             method: "POST",

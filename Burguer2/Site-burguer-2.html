@@ -4,317 +4,742 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consumer - Cardápio Digital</title>
+    <title>BeeFood - Cardápio Digital</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Resets e Estilos Gerais */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        :root {
+            --primary: #FFD700;
+            --dark: #1a1a1a;
+            --light: #fff;
+            --gray: #f8f9fa;
+            --danger: #ff4d4d;
+            --success: #27ae60;
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         body {
-            background-color: #ffffff;
-            color: #333;
-            line-height: 1.6;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--gray);
+            color: var(--dark);
         }
 
-        /* Header e Hero Section */
         header {
-            background: linear-gradient(180deg, #a30000 0%, #660000 100%);
-            color: white;
-            text-align: center;
-            padding: 40px 20px 100px 20px;
-            position: relative;
-        }
-
-        .logo {
-            font-weight: bold;
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-
-        .cta-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .btn {
-            padding: 12px 25px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 14px;
-            transition: 0.3s;
-        }
-
-        .btn-white {
-            background-color: white;
-            color: #333;
-        }
-
-        .btn-outline {
-            border: 2px solid white;
-            color: white;
-        }
-
-        /* Sobreposição de Imagens (Celular e Tablet) */
-        .mockup-container {
-            position: relative;
-            max-width: 800px;
-            margin: -60px auto 40px auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 450px;
-        }
-
-        .img-desktop {
-            width: 80%;
-            z-index: 1;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            border-radius: 10px;
-        }
-
-        .img-mobile {
-            position: absolute;
-            width: 25%;
-            right: 15%;
-            bottom: -20px;
-            z-index: 2;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            border-radius: 20px;
-        }
-
-        /* Seção de Funcionalidades (Grid) */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 40px;
-            max-width: 1000px;
-            margin: 50px auto;
-            padding: 20px;
-        }
-
-        .feature-item {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .feature-item i {
-            font-size: 40px;
-            color: #00a8ff;
-            margin-bottom: 10px;
-        }
-
-        .feature-item h3 {
-            font-size: 1.2rem;
-            color: #444;
-        }
-
-        .feature-item p {
-            font-size: 0.9rem;
-            color: #777;
-        }
-
-        /* Seção Inferior Vermelha */
-        .status-section {
-            display: flex;
-            background-color: #800000;
-            color: white;
-            min-height: 400px;
-        }
-
-        .status-text {
-            flex: 1;
-            padding: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .status-text h2 {
-            margin-bottom: 5px;
-            font-size: 1.8rem;
-        }
-
-        .status-text p {
-            margin-bottom: 30px;
-            font-size: 1rem;
-            opacity: 0.9;
-        }
-
-        .status-image {
-            flex: 1;
-            background-image: url('https://via.placeholder.com/600x800/darkred/white?text=Celular+na+Mão'); /* Substituir pela sua imagem */
+            background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr-mXIsG4tiqdA3ik5uQhRn5EMZSvsyXlQ6T-Wgy148roOvQ7O-2CiRwzX&s=10');
             background-size: cover;
             background-position: center;
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            position: relative;
+            margin-bottom: 50px; 
         }
 
-        /* Botão WhatsApp Fixo */
-        .whatsapp-fixed {
+        .profile-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 5px solid var(--gray);
+            object-fit: cover;
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            z-index: 2;
+        }
+
+        header h1 {
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            margin-top: 0;
+        }
+
+        .store-info {
+            text-align: center;
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 0.9em;
+        }
+
+        .status-badge { font-weight: bold; }
+
+        .dot {
+            height: 10px;
+            width: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .dot-open {
+            background-color: var(--success);
+            animation: pulse 1.5s infinite;
+        }
+
+        .dot-closed { background-color: var(--danger); }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(39, 174, 96, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(39, 174, 96, 0); }
+        }
+
+        .insta-link {
+            color: #E1306C;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1em;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 0 15px;
+            padding-bottom: 100px;
+        }
+
+        .categories {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 5px;
+            scrollbar-width: none;
+            margin-top: 15px;
+        }
+
+        .category-btn {
+            background: var(--light);
+            border: 1px solid #ddd;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .category-btn.active {
+            background: var(--dark);
+            color: var(--primary);
+            border-color: var(--dark);
+        }
+
+        .menu-item {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+        }
+
+        .item-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .item-info h3 { margin: 0 0 5px 0; font-size: 1.1em; }
+        .item-info p { margin: 0; color: #777; font-size: 0.85em; margin-bottom: 8px; }
+        .item-price { font-weight: bold; color: #27ae60; }
+
+        .add-btn {
+            background: var(--primary);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-footer {
             position: fixed;
             bottom: 20px;
-            right: 20px;
-            background-color: #25d366;
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 500px;
+            background: var(--dark);
+            color: var(--light);
+            padding: 15px 25px;
+            border-radius: 20px;
+            display: none;
+            justify-content: space-between;
             align-items: center;
-            font-size: 30px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 99;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        #cart-modal, #checkout-modal {
+            display: none;
+            position: fixed;
+            bottom: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
             z-index: 1000;
         }
 
-        /* Responsividade */
-        @media (max-width: 768px) {
-            .features { grid-template-columns: 1fr; }
-            .status-section { flex-direction: column; }
-            .mockup-container { height: 300px; }
-            h1 { font-size: 1.8rem; }
+        .modal-content {
+            position: absolute;
+            bottom: 0;
+            background: white;
+            width: 100%;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            padding: 25px;
+            box-sizing: border-box;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
-        
-        /* Estilo para manter o vídeo no formato vertical de celular */
-.video-wrapper {
-    width: 100%;
-    margin: 25px 0;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    aspect-ratio: 9 / 16; /* Proporção do YouTube Shorts */
-    max-width: 300px; /* Tamanho ideal para não ocupar a tela toda no PC */
-    margin-left: auto;
-    margin-right: auto;
-}
+        .cart-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #fff;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .cart-img { width: 55px; height: 55px; border-radius: 10px; object-fit: cover; margin-right: 12px; }
+
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f8f9fa;
+            padding: 6px 12px;
+            border-radius: 10px;
+        }
+
+        .qty-btn { border: none; background: none; font-size: 1.2em; cursor: pointer; font-weight: bold; }
+        .delete-btn { color: var(--danger); cursor: pointer; margin-left: 15px; }
+
+        .btn-main {
+            background: var(--success);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 18px;
+            border-radius: 15px;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; font-size: 0.9em; }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            box-sizing: border-box;
+        }
+        .obs { font-size: 0.8em; color: #666; margin-top: 4px; }
+
+        .coupon-section {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        .coupon-section input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+        .btn-coupon {
+            padding: 10px 15px;
+            background: var(--dark);
+            color: var(--primary);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-remove-coupon {
+            background: var(--danger);
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">consumer</div>
-        <p>Cardápio Digital Grátis + Integração com WhatsApp e com PDV estrategico</p>
-        <h1>Cardápio Digital Grátis para Delivery</h1>
-        
-        <div class="cta-buttons">
-            <a href="https://wa.me/62995679219?text=Ol%C3%A1%2C%20eu%20quero%20*Come%C3%A7ar%20Agora%20%7C%20100%25%20Gr%C3%A1tis.*%0AComo%20funciona%3F!" class="btn btn-white">Comece Agora | 100% Grátis</a>
-            <a href="https://wa.me/62995679219?text=Ol%C3%A1%2C%20eu%20tenho%20interesse%20em%20saber%20como%20funciona%20esse%20site%20*Burguer%202*." class="btn btn-outline">Chame no WhatsApp</a>
-        </div>
-        <br>
-           <a href="Hamburguer-2.html" class="btn btn-outline">Vizualizar Site e Testar</a>
-    </header>
+<header>
+    <h1>Hambúrgue</h1>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9uqXczkmobvK2-KkVB8TIbETjISMwLMKfmJXWKdfunmyjVlwGNBhOnQc&s=10" alt="Perfil" class="profile-img">
+</header>
 
-    <div class="mockup-container">
-        <img src="IMG-Tablet.jpg" alt="Desktop View" class="img-desktop">
-        <img src="IMG-celular.jpg" alt="Mobile View" class="img-mobile">
+<div class="container">
+    <div class="store-info">
+        <span><i class="fas fa-map-marker-alt"></i> Nossa localização - Anápolis</span>
+        <span id="store-status" class="status-badge"></span>
+        <a href="#" class="insta-link"><i class="fab fa-instagram"></i> @Seu_insta</a>
     </div>
 
-    <section style="text-align: center; padding: 40px 20px;">
-        <p style="color: #666; font-weight: bold; text-transform: uppercase; font-size: 12px;">+ de 300 Restaurantes já criaram seu cardápio digital</p>
-        <h2 style="font-size: 2rem; margin: 10px 0;">Cardápio Digital Grátis para restaurantes</h2>
-        <p style="max-width: 700px; margin: 0 auto; color: #555;">Somos uma equi que esta 24 horas pensando em melhorar nossos projetos a cada estante</p>
-       <p>👇 Confira o vídeo 👇</p>
-    </section>
-    <!--Tem que colocar o /embed/ na frente do: .com-->
-    
-
-    <div class="video-wrapper">
-    <iframe width="100%" height="100%" 
-        src="https://www.youtube.com/embed/wKt_OqiaSi0?autoplay=1&mute=1&loop=1&playlist=wKt_OqiaSi0&controls=0&rel=0" 
-        title="Site para Hamburgueria" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-        allowfullscreen>
-    </iframe>
+    <div class="categories">
+        <button class="category-btn active" onclick="filterMenu('all')">Todos</button>
+        <button class="category-btn" onclick="filterMenu('lanches')">Lanches</button>
+        <button class="category-btn" onclick="filterMenu('acompanhamentos')">Acompanhamentos</button>
+        <button class="category-btn" onclick="filterMenu('bebidas')">Bebidas</button>
+    </div>
+    <div id="menu-container"></div>
 </div>
 
+<div id="cart-footer" class="cart-footer" onclick="toggleCart()">
+    <div><i class="fas fa-shopping-basket"></i> <span id="cart-count">0</span> itens</div>
+    <strong>R$ <span id="cart-total-display">0.00</span></strong>
+</div>
 
+<div id="cart-modal">
+    <div class="modal-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="margin:0">Sacola de Itens</h2>
+            <i class="fas fa-times" onclick="toggleCart()" style="font-size: 1.5em; cursor: pointer; color: #999"></i>
+        </div>
+        <div id="cart-items-list"></div>
+        
+        <div class="coupon-section">
+            <input type="text" id="coupon-input" placeholder="Cupom de desconto">
+            <button class="btn-coupon" id="apply-btn" onclick="applyCoupon()">Aplicar</button>
+            <button class="btn-remove-coupon" id="remove-btn" onclick="removeCoupon()" style="display: none;"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="coupon-msg" style="font-size: 0.8em; margin-top: 5px;"></div>
 
-    <section class="features">
-        <div class="feature-item">
-            <i class="fas fa-mobile-alt"></i>
-            <h3>Cardápio Digital para Delivery</h3>
-            <p><strong>Sem Taxas</strong> e com Maiores Margens de Lucro. Venda sem depender de terceiros. O seu site de delivery personalizados.</p>
-        </div>
-        <div class="feature-item">
-            <i class="fas fa-desktop" style="color: #e74c3c;"></i>
-            <h3>Cardápio com Sistema de Gestão Criativo</h3>
-            <p>O seu site personalizado que fazem os pedidos cairem direto no <strong>WhatsApp</strong>, fácil para copia e lançar à impressora de sua cozinha.</p>
-        </div>
-        <div class="feature-item">
-            <i class="fas fa-motorcycle" style="color: #f1c40f;"></i>
-            <h3>O site com função de entrega</h3>
-            <p>Oferece entrega em domicílio (Delivery), retirada rápida no Balcão ou serviço diretamente na Mesa em frente ao estabelecimento.</p>
-        </div>
-        <div class="feature-item">
-            <i class="fas fa-smile" style="color: #2ecc71;"></i>
-            <h3>Cardápio Digital com Cupons</h3>
-            <p>Cupons de desconto e pagamentos online.</p>
-        </div>
-    </section>
-
-    <section class="status-section">
-        <div class="status-text">
-            <div>
-                <h2>Pedido Confirmado.</h2>
-                <p>Apos o cliente enviar o pedido pelo whatsapp, você o informa assim que o pedido for pago pelo link de pagamento.</p>
+        <div style="margin-top: 25px; padding: 15px; background: #f8f9fa; border-radius: 15px;">
+            <div style="display: flex; justify-content: space-between; font-size: 1.2em; font-weight: bold;">
+                <span>Total:</span>
+                <span style="color: var(--success)">R$ <span id="modal-total">0.00</span></span>
             </div>
-            <div>
-                <h2>Em Preparo.</h2>
-                <p>Após receber o pedido pelo whatsapp, você copiarar a mensagem e já lança no sistema de impressão. Os pedidos vão direto para a impressora da cozinha.</p>
+            <div id="discount-display" style="display: none; justify-content: space-between; color: var(--danger); font-size: 0.9em; margin-top: 5px;">
+                <span>Desconto:</span>
+                <span>- R$ <span id="modal-discount">0.00</span></span>
             </div>
-            <div>
-                <h2>Saiu para Entrega.</h2>
-                <p>Você avisa seus clientes no WhatsApp quando o pedido sai para a entrega.</p>
+            <div id="delivery-tax-display" style="display: none; justify-content: space-between; color: #666; font-size: 0.9em; margin-top: 5px;">
+                <span>Taxa de Entrega:</span>
+                <span>+ R$ 10.00</span>
+            </div>
+            <div style="margin-top: 10px; border-top: 1px dashed #ccc; padding-top: 10px; font-size: 0.85em; color: #666;">
+                <i class="fas fa-motorcycle"></i> Taxa de entrega fixa: <strong>R$ 10,00</strong> (somente para Delivery)
             </div>
         </div>
-        <div class="status-image">
+        <button class="btn-main" onclick="openCheckout()">Finalizar Compra</button>
+    </div>
+</div>
+
+<div id="checkout-modal">
+    <div class="modal-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="margin:0">Checkout</h2>
+            <i class="fas fa-arrow-left" onclick="closeCheckout()" style="font-size: 1.5em; cursor: pointer; color: #999"></i>
+        </div>
+
+        <div class="form-group">
+            <label>Como deseja receber?</label>
+            <select id="delivery-type" onchange="toggleFields()">
+                <option value="mesa">Mesa 5</option>
+                <option value="retirada">Retirar no Balcão</option>
+                <option value="delivery">Delivery em Casa</option>
+            </select>
+        </div>
+
+        <div id="fields-retirada" style="display: none;">
+            <div class="form-group">
+                <label>CPF*</label>
+                <input type="text" id="cpf-retirada" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCPF(this)">
+                <div class="obs">CPF para retirada com segurança.</div>
             </div>
-    </section>
+        </div>
 
-    <a href="https://wa.me/62995679219?text=Ol%C3%A1%2C%20eu%20tenho%20interesse%20em%20saber%20como%20funciona%20esse%20site%20*Burguer%202*." class="whatsapp-fixed" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
+        <div id="fields-delivery" style="display: none;">
+            <div class="form-group"><label>Nome Completo*</label><input type="text" id="dev-nome"></div>
+            <div class="form-group"><label>CPF*</label><input type="text" id="dev-cpf" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCPF(this)"></div>
+            <div class="form-group"><label>Bairro*</label><input type="text" id="dev-bairro"></div>
+            <div class="form-group"><label>Rua/Avenida*</label><input type="text" id="dev-rua"></div>
+            <div class="form-group"><label>Número/Quadra e Lote*</label><input type="text" id="dev-num"></div>
+            <div class="form-group"><label>Complemento</label><input type="text" id="dev-comp"></div>
+        </div>
 
-    <script>
-        // Scripts para interatividade simples
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("Site carregado com sucesso!");
-            
-            // Exemplo de animação simples ao rolar
-            const features = document.querySelectorAll('.feature-item');
-            
-            window.addEventListener('scroll', function() {
-                features.forEach(item => {
-                    const rect = item.getBoundingClientRect();
-                    if(rect.top < window.innerHeight) {
-                        item.style.opacity = '1';
-                        item.style.transform = 'translateY(0)';
-                    }
-                });
-            });
+        <button class="btn-main" onclick="sendWhatsApp()">Enviar Pedido <i class="fab fa-whatsapp"></i></button>
+    </div>
+</div>
 
-            // Inicializando estilo para animação
-            features.forEach(item => {
-                item.style.opacity = '0';
-                item.style.transform = 'translateY(20px)';
-                item.style.transition = 'all 0.6s ease-out';
-            });
-        });
-    </script>
+<script>
+    let isStoreOpen = false;
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let discountValue = 0;
+    let appliedCoupon = "";
+    const TAXA_ENTREGA = 10.00;
+
+    const cuponsValidos = {
+        "BEE10": 0.10,
+        "BEE5": 5.00,
+        "PRIMEIRACOMPRA": 0.15
+    };
+
+    const linksDePagamentoFixos = {
+        "1.00": "https://mpago.la/2AXmnns", "2.00": "https://mpago.la/1XRx3MU", "3.00": "https://mpago.la/2hCQdie",
+        "4.00": "https://mpago.la/21V68Ki", "5.00": "https://mpago.la/2GCnr3j", "6.00": "https://mpago.la/127jvNn",
+        "7.00": "https://mpago.la/2p6uptE", "8.00": "https://mpago.la/11j2Jua", "9.00": "https://mpago.la/1eFbxkN",
+        "10.00": "https://mpago.la/2cRxjg5", "11.00": "https://mpago.la/2LS6XMT", "12.00": "https://mpago.la/1ssdztd",
+        "13.00": "https://mpago.la/2pEQ3rJ", "14.00": "https://mpago.la/2ShtRu7", "15.00": "https://mpago.la/2MdLA1J",
+        "16.00": "https://mpago.la/122M9xy", "17.00": "https://mpago.la/1hZpFv4", "18.00": "https://mpago.la/2cvpYLD",
+        "19.00": "https://mpago.la/2fHzer1", "20.00": "https://mpago.la/2d4EhNH", "21.00": "https://mpago.la/2wtPbWJ",
+        "22.00": "https://mpago.la/1VEbPD6", "23.00": "https://mpago.la/1u4N2eZ", "24.00": "https://mpago.la/2tz3Thg",
+        "25.00": "https://mpago.la/24MoD81", "26.00": "https://mpago.la/1gQ85w8", "27.00": "https://mpago.la/2ncRJDR",
+        "28.00": "https://mpago.la/1rHT6fQ", "29.00": "https://mpago.la/1wP8yiX", "30.00": "https://mpago.la/1wEbmXA",
+        "31.00": "https://mpago.la/23tCjAH", "32.00": "https://mpago.la/1H7ACLr", "33.00": "https://mpago.la/2P1Snuu",
+        "34.00": "https://mpago.la/2dM8pXF", "35.00": "https://mpago.la/2ccdL4T", "36.00": "https://mpago.la/2LUutRb",
+        "37.00": "https://mpago.la/2SaBCdk", "38.00": "https://mpago.la/32a4XhN", "39.00": "https://mpago.la/1uK9SV6",
+        "40.00": "https://mpago.la/22fHXUh", "41.00": "https://mpago.la/2FJM5SR", "42.00": "https://mpago.la/2majQ3e",
+        "43.00": "https://mpago.la/2xuPWxe", "44.00": "https://mpago.la/1xnrgBU", "45.00": "https://mpago.la/2YxWyeN",
+        "46.00": "https://mpago.la/1C8B2Ys", "47.00": "https://mpago.la/2BHbwKb", "48.00": "https://mpago.la/2wJ79yX",
+        "49.00": "https://mpago.la/1q1CXu8", "50.00": "https://mpago.la/18PNJgh", "51.00": "https://mpago.la/29ngSEP",
+        "52.00": "https://mpago.la/1wpPNU6", "53.00": "https://mpago.la/2w4JghY", "54.00": "https://mpago.la/2wP8Zzy",
+        "55.00": "https://mpago.la/1uNDuE1", "56.00": "https://mpago.la/2HwcPeo", "57.00": "https://mpago.la/2SrqAtv",
+        "58.00": "https://mpago.la/2QddsUQ", "59.00": "https://mpago.la/1KyezXR", "60.00": "https://mpago.la/32XUkFX",
+        "61.00": "https://mpago.la/2LdRTmk", "62.00": "https://mpago.la/31yQrfo", "63.00": "https://mpago.la/2Nj6SQ3",
+        "64.00": "https://mpago.la/1AUtYYJ", "65.00": "https://mpago.la/2dJLWg6", "66.00": "https://mpago.la/2Qq6ofn",
+        "67.00": "https://mpago.la/2HSYSG8", "68.00": "https://mpago.la/2agtz9z", "69.00": "https://mpago.la/1yzPBDV",
+        "70.00": "https://mpago.la/19j57aj", "71.00": "https://mpago.la/2NN176T", "72.00": "https://mpago.la/2bgb4hq",
+        "73.00": "https://mpago.la/1Pjn7DD", "74.00": "https://mpago.la/1bnsqvS", "75.00": "https://mpago.la/1ScZwvW",
+        "76.00": "https://mpago.la/2pF999n", "77.00": "https://mpago.la/25ZZdoS", "78.00": "https://mpago.la/1df8NXT",
+        "79.00": "https://mpago.la/2c5ZvKh", "80.00": "https://mpago.la/2StD47t", "81.00": "https://mpago.la/1g2b3ky",
+        "82.00": "https://mpago.la/1EQriMV", "83.00": "https://mpago.la/2Ur8gAJ", "84.00": "https://mpago.la/12trufq",
+        "85.00": "https://mpago.la/2UkJGkF", "86.00": "https://mpago.la/1N2Zw5R", "87.00": "https://mpago.la/2QSwF7p",
+        "88.00": "https://mpago.la/2CnEweW", "89.00": "https://mpago.la/1qjGyST", "90.00": "https://mpago.la/18ZpYMG",
+        "91.00": "https://mpago.la/2jXbcve", "92.00": "https://mpago.la/1G4GRb4", "93.00": "https://mpago.la/1G4GRb4",
+        "94.00": "https://mpago.la/2L5SfaX", "95.00": "https://mpago.la/1T8HvbD", "96.00": "https://mpago.la/16i17Um",
+        "97.00": "https://mpago.la/2ULjkPj", "98.00": "https://mpago.la/2WWWm1m", "99.00": "https://mpago.la/2wQMxrn",
+        "100.00": "https://mpago.la/14fLE5V"
+    };
+
+    function mascaraCPF(i) {
+        let v = i.value.replace(/\D/g,"");
+        v = v.replace(/(\d{3})(\d)/,"$1.$2");
+        v = v.replace(/(\d{3})(\d)/,"$1.$2");
+        v = v.replace(/(\d{3})(\d{1,2})$/,"$1-$2");
+        i.value = v;
+    }
+
+    function validarCPF(cpf) {
+        cpf = cpf.replace(/[^\d]+/g,'');
+        if(cpf == '' || cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
+        let add = 0;
+        for (let i=0; i < 9; i ++) add += parseInt(cpf.charAt(i)) * (10 - i);
+        let rev = 11 - (add % 11);
+        if (rev == 10 || rev == 11) rev = 0;
+        if (rev != parseInt(cpf.charAt(9))) return false;
+        add = 0;
+        for (let i = 0; i < 10; i ++) add += parseInt(cpf.charAt(i)) * (11 - i);
+        rev = 11 - (add % 11);
+        if (rev == 10 || rev == 11) rev = 0;
+        if (rev != parseInt(cpf.charAt(10))) return false;
+        return true;
+    }
+
+    function checkStoreStatus() {
+        const statusElement = document.getElementById('store-status');
+        const now = new Date();
+        const hour = now.getHours();
+        const minutes = now.getMinutes();
+        const currentTime = hour * 60 + minutes;
+        const openTime = 07 * 60 + 30;
+        const closeTime = 23 * 60 + 34;
+
+        if (currentTime >= openTime && currentTime <= closeTime) {
+            isStoreOpen = true;
+            statusElement.innerHTML = '<span class="dot dot-open"></span> Aberto agora';
+            statusElement.style.color = "var(--success)";
+        } else {
+            isStoreOpen = false;
+            statusElement.innerHTML = '<span class="dot dot-closed"></span> Fechado agora';
+            statusElement.style.color = "var(--danger)";
+        }
+    }
+
+    setInterval(checkStoreStatus, 60000);
+
+    const menuData = [
+        { id: 1, name: "Bee Burguer Especial", price: 28.00, category: "lanches", desc: "Artesanal 180g com molho de mel.", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200" },
+        { id: 2, name: "Combo Colmeia", price: 42.00, category: "lanches", desc: "Burguer duplo + Batata + Refri.", image: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=200" },
+        { id: 3, name: "Batata Frita G", price: 18.00, category: "acompanhamentos", desc: "Crocante com sal e páprica.", image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200" },
+        { id: 5, name: "Coca Cola Lata 350ml", price: 6.00, category: "bebidas", desc: "Coca, Fanta ou Guaraná.", image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200" },
+        { id: 6, name: "X-Bee Bacon", price: 32.00, category: "lanches", desc: "Artesanal, muito bacon e queijo.", image: "https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=200" },
+        { id: 7, name: "Bee Chicken", price: 25.00, category: "lanches", desc: "Frango empanado e maionese verde.", image: "https://images.unsplash.com/photo-1610614819513-58e34989848b?w=200" },
+        { id: 8, name: "Bee Veggie", price: 29.00, category: "lanches", desc: "Hambúrguer de grão de bico.", image: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=200" },
+        { id: 9, name: "Nuggets (10 unidades)", price: 15.00, category: "acompanhamentos", desc: "Acompanha molho barbecue.", image: "https://images.unsplash.com/photo-1562967914-608f82629710?w=200" },
+        { id: 10, name: "Anéis de Cebola", price: 16.00, category: "acompanhamentos", desc: "Crocantes e sequinhos.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTES_sur3LDA85kvuZpgug2D5TL4-CPHrma6hOmSZ6ylhkJiRKIplrPTztA&s=10" },
+        { id: 11, name: "Batata com Cheddar", price: 22.00, category: "acompanhamentos", desc: "Muita cobertura de queijo.", image: "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=200" },
+        { id: 12, name: "Suco de Laranja 500ml", price: 9.00, category: "bebidas", desc: "Natural e gelado.", image: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=200" },
+        { id: 13, name: "Água Mineral 500ml", price: 4.00, category: "bebidas", desc: "Com ou sem gás.", image: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=200" },
+        { id: 14, name: "Cerveja Heineken Long", price: 12.00, category: "bebidas", desc: "Long neck 330ml.", image: "https://images.unsplash.com/photo-1618885472179-5e474019f2a9?w=200" },
+        { id: 15, name: "Milkshake Chocolate", price: 15.90, category: "bebidas", desc: "400ml de pura cremosidade.", image: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=200" }
+    ];
+
+    function renderMenu(items) {
+        const container = document.getElementById('menu-container');
+        container.innerHTML = items.map(item => `
+            <div class="menu-item">
+                <div class="item-content">
+                    <img src="${item.image}" class="item-img">
+                    <div class="item-info">
+                        <h3>${item.name}</h3>
+                        <p>${item.desc}</p>
+                        <span class="item-price">R$ ${item.price.toFixed(2)}</span>
+                    </div>
+                </div>
+                <button class="add-btn" onclick="addToCart(${item.id})"><i class="fas fa-plus"></i></button>
+            </div>
+        `).join('');
+    }
+
+    function addToCart(id) {
+        const item = cart.find(i => i.id === id);
+        if (item) item.quantity++;
+        else cart.push({ ...menuData.find(p => p.id === id), quantity: 1 });
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateUI();
+    }
+
+    function changeQuantity(id, delta) {
+        const item = cart.find(i => i.id === id);
+        if (item) {
+            item.quantity += delta;
+            if (item.quantity <= 0) cart = cart.filter(i => i.id !== id);
+        }
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateUI();
+        renderCartItems();
+    }
+
+    function removeFromCart(id) {
+        cart = cart.filter(i => i.id !== id);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateUI();
+        renderCartItems();
+        if (cart.length === 0) toggleCart();
+    }
+
+    function applyCoupon() {
+        const input = document.getElementById('coupon-input').value.toUpperCase().trim();
+        const msg = document.getElementById('coupon-msg');
+        
+        if (cuponsValidos[input]) {
+            appliedCoupon = input;
+            msg.innerText = "Cupom aplicado!";
+            msg.style.color = "var(--success)";
+            document.getElementById('apply-btn').style.display = 'none';
+            document.getElementById('remove-btn').style.display = 'block';
+            document.getElementById('coupon-input').disabled = true;
+            updateUI();
+        } else {
+            appliedCoupon = "";
+            discountValue = 0;
+            msg.innerText = "Cupom inválido.";
+            msg.style.color = "var(--danger)";
+            updateUI();
+        }
+    }
+
+    function removeCoupon() {
+        appliedCoupon = "";
+        discountValue = 0;
+        document.getElementById('coupon-input').value = "";
+        document.getElementById('coupon-input').disabled = false;
+        document.getElementById('apply-btn').style.display = 'block';
+        document.getElementById('remove-btn').style.display = 'none';
+        document.getElementById('coupon-msg').innerText = "";
+        updateUI();
+    }
+
+    function updateUI() {
+        let subtotal = cart.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0);
+        
+        if (appliedCoupon) {
+            let val = cuponsValidos[appliedCoupon];
+            if (val <= 1) discountValue = subtotal * val;
+            else discountValue = val;
+        } else {
+            discountValue = 0;
+        }
+
+        const deliveryType = document.getElementById('delivery-type').value;
+        let totalFinal = subtotal - discountValue;
+        
+        // SOMA A TAXA NO TOTAL SE FOR DELIVERY
+        if(deliveryType === 'delivery') {
+            totalFinal += TAXA_ENTREGA;
+            document.getElementById('delivery-tax-display').style.display = 'flex';
+        } else {
+            document.getElementById('delivery-tax-display').style.display = 'none';
+        }
+
+        if(totalFinal < 0) totalFinal = 0;
+
+        document.getElementById('cart-footer').style.display = cart.length > 0 ? 'flex' : 'none';
+        document.getElementById('cart-count').innerText = cart.reduce((a, b) => a + b.quantity, 0);
+        document.getElementById('cart-total-display').innerText = totalFinal.toFixed(2);
+        document.getElementById('modal-total').innerText = totalFinal.toFixed(2);
+        
+        const discDisplay = document.getElementById('discount-display');
+        if(discountValue > 0) {
+            discDisplay.style.display = 'flex';
+            document.getElementById('modal-discount').innerText = discountValue.toFixed(2);
+        } else {
+            discDisplay.style.display = 'none';
+        }
+    }
+
+    function renderCartItems() {
+        document.getElementById('cart-items-list').innerHTML = cart.map(item => `
+            <div class="cart-row">
+                <div style="display: flex; align-items: center; flex: 1;">
+                    <img src="${item.image}" class="cart-img">
+                    <div>
+                        <div style="font-weight: 600;">${item.name}</div>
+                        <div style="color: #27ae60; font-size: 0.85em;">R$ ${(item.price * item.quantity).toFixed(2)}</div>
+                    </div>
+                </div>
+                <div class="qty-controls">
+                    <button class="qty-btn" onclick="changeQuantity(${item.id}, -1)">-</button>
+                    <span>${item.quantity}</span>
+                    <button class="qty-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
+                </div>
+                <i class="fas fa-trash-alt delete-btn" onclick="removeFromCart(${item.id})"></i>
+            </div>
+        `).join('');
+    }
+
+    function toggleCart() {
+        const m = document.getElementById('cart-modal');
+        if (m.style.display === 'block') m.style.display = 'none';
+        else { renderCartItems(); m.style.display = 'block'; }
+    }
+
+    function openCheckout() {
+        checkStoreStatus();
+        if(!isStoreOpen) { alert("Loja fechada!"); return; }
+        document.getElementById('cart-modal').style.display = 'none';
+        document.getElementById('checkout-modal').style.display = 'block';
+    }
+
+    function closeCheckout() {
+        document.getElementById('checkout-modal').style.display = 'none';
+        document.getElementById('cart-modal').style.display = 'block';
+    }
+
+    function toggleFields() {
+        const type = document.getElementById('delivery-type').value;
+        document.getElementById('fields-retirada').style.display = (type === 'retirada') ? 'block' : 'none';
+        document.getElementById('fields-delivery').style.display = (type === 'delivery') ? 'block' : 'none';
+        updateUI(); // ATUALIZA O TOTAL QUANDO MUDA O TIPO DE ENTREGA
+    }
+
+    function enviarPedidoAoPDV(dadosDoPedido) {
+        const URL_PDV = 'HTTPS://API.SEUPDV.COM.BR/PEDIDOS'; 
+
+        fetch(URL_PDV, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dadosDoPedido)
+        })
+        .then(response => {
+            if (response.ok) console.log("Pedido integrado ao PDV com sucesso.");
+            else console.error("Erro ao integrar com PDV.");
+        })
+        .catch(error => console.error("Falha na conexão com PDV:", error));
+    }
+
+    function sendWhatsApp() {
+        checkStoreStatus();
+        if(!isStoreOpen) { alert("Loja fechada."); return; }
+
+        const type = document.getElementById('delivery-type').value;
+        let cpfValue = "";
+
+        if(type === 'retirada') {
+            cpfValue = document.getElementById('cpf-retirada').value;
+            if(!validarCPF(cpfValue)) { alert("CPF inválido!"); return; }
+        }
+        if(type === 'delivery') {
+            cpfValue = document.getElementById('dev-cpf').value;
+            if(!validarCPF(cpfValue)) { alert("CPF inválido!"); return; }
+        }
+
+        const subtotal = cart.reduce((a, b) => a + (b.price * b.quantity), 0);
+        let totalFinal = subtotal - discountValue;
+        if(type === 'delivery') totalFinal += TAXA_ENTREGA;
+        
+        const totalFormatado = totalFinal.toFixed(2);
+        
+        let linkPagamento = linksDePagamentoFixos[totalFormatado] || "#Estamos gerando seu link de pagamento, só um momento.";
+
+        const dadosParaPDV = {
+            origem: "Cardápio Digital BeeFood",
+            tipo: type,
+            cliente_cpf: cpfValue,
+            itens: cart,
+            total: totalFormatado,
+            desconto: discountValue.toFixed(2),
+            cupom: appliedCoupon,
+            taxa_entrega: type === 'delivery' ? 10.00 : 0,
+            link_pago: linkPagamento
+        };
+
+        enviarPedidoAoPDV(dadosParaPDV);
+
+        let msg = "🐝 *NOVO PEDIDO BEEFOOD*\n------------------\n";
+        cart.forEach(i => msg += `*${i.quantity}x* ${i.name}\n`);
+        
+        msg += `\nSubtotal: R$ ${subtotal.toFixed(2)}`;
+        if(discountValue > 0) msg += `\nCupom: ${appliedCoupon} (-R$ ${discountValue.toFixed(2)})`;
+        if(type === 'delivery') msg += `\nTaxa Entrega: R$ 10.00`;
+
+        msg += `\n*TOTAL: R$ ${totalFormatado}*`;
+        msg += `\n\n💳 *LINK PARA PAGAMENTO:* \n${linkPagamento}\n`;
+        
+        if(type === 'mesa') msg += `\n📍 Mesa 5`;
+        else if(type === 'retirada') msg += `\n🏪 Retirada\nCPF: ${cpfValue}`;
+        else if(type === 'delivery') {
+            msg += `\n🏠 Delivery\nCliente: ${document.getElementById('dev-nome').value}\nCPF: ${cpfValue}`;
+            msg += `\nEnd: ${document.getElementById('dev-rua').value}, ${document.getElementById('dev-num').value}`;
+        }
+
+        // Limpar carrinho após pedido se desejar:
+        // cart = []; localStorage.removeItem('cart'); updateUI();
+
+        window.open(`https://wa.me/5562995679219?text=${encodeURIComponent(msg)}`);
+    }
+
+    function filterMenu(category) {
+        document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        const filtered = category === 'all' ? menuData : menuData.filter(i => i.category === category);
+        renderMenu(filtered);
+    }
+
+    renderMenu(menuData);
+    checkStoreStatus();
+    updateUI(); // Chama updateUI no carregamento para refletir dados salvos
+</script>
 </body>
 </html>

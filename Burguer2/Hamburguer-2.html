@@ -378,7 +378,7 @@
             <div class="form-group"><label>Complemento</label><input type="text" id="dev-comp"></div>
         </div>
 
-        <button class="btn-main" onclick="sendWhatsApp()">Enviar Pedido <i class="fas fa-lock"></i><i class="fab fa-whatsapp"></i></button>
+        <button class="btn-main" onclick="sendWhatsApp()">Enviar Pedido <i class="fab fa-whatsapp"></i></button>
     </div>
 </div>
 
@@ -700,15 +700,15 @@
         const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScCadaja6iLfwVL7fH6aVs_iXTJpZgBREY-Ju98Zqg3KKslWg/formResponse";
         const formData = new FormData();
         
-        formData.append("entry.62718261", dados.produtos);        
+        formData.append("entry.1399400806", dados.produtos);        
         formData.append("entry.1278482765", dados.nome);            
         formData.append("entry.143126943", dados.cpf);              
-        formData.append("entry.1878038120", dados.bairro);           
-        formData.append("entry.1399400806", dados.rua);                 
-        formData.append("entry.764712754", dados.numero);           
-        formData.append("entry.1697072560", dados.comp);        
-        formData.append("entry.1857638858", dados.coleta);          
-        formData.append("entry.1235511550", dados.total);            
+        formData.append("entry.ID_BAIRRO", dados.bairro);           
+        formData.append("entry.ID_RUA", dados.rua);                 
+        formData.append("entry.ID_NUMERO", dados.numero);           
+        formData.append("entry.ID_COMPLEMENTO", dados.comp);        
+        formData.append("entry.1697072560", dados.coleta);          
+        formData.append("entry.764712754", dados.total);            
 
         fetch(FORM_URL, { method: "POST", mode: "no-cors", body: formData });
     }

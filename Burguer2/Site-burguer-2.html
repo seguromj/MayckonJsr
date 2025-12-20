@@ -485,9 +485,9 @@
         { id: 5, name: "Coca Cola Lata 350ml", price: 6.00, category: "bebidas", desc: "Coca, Fanta ou Guaraná.", image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200" },
         { id: 6, name: "X-Bee Bacon", price: 32.00, category: "lanches", desc: "Artesanal, muito bacon e queijo.", image: "https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=200" },
         { id: 7, name: "Bee Chicken", price: 25.00, category: "lanches", desc: "Frango empanado e maionese verde.", image: "https://images.unsplash.com/photo-1610614819513-58e34989848b?w=200" },
-        { id: 8, name: "Bee Veggie", price: 29.00, category: "lanches", desc: "Hambúrguer de grão de bico.", image: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=200" },
+        { id: 8, name: "Bee Veggie", price: 29.90, category: "lanches", desc: "Hambúrguer de grão de bico.", image: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=200" },
         { id: 9, name: "Nuggets (10 unidades)", price: 15.00, category: "acompanhamentos", desc: "Acompanha molho barbecue.", image: "https://images.unsplash.com/photo-1562967914-608f82629710?w=200" },
-        { id: 10, name: "Anéis de Cebola", price: 16.00, category: "acompanhamentos", desc: "Crocantes e sequinhos.", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTES_sur3LDA85kvuZpgug2D5TL4-CPHrma6hOmSZ6ylhkJiRKIplrPTztA&s=10" },
+        { id: 10, name: "Anéis de Cebola", price: 16.50, category: "acompanhamentos", desc: "Crocantes e sequinhos.", image: "https://images.unsplash.com/photo-1639024471283-035188835118?w=200" },
         { id: 11, name: "Batata com Cheddar", price: 22.00, category: "acompanhamentos", desc: "Muita cobertura de queijo.", image: "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=200" },
         { id: 12, name: "Suco de Laranja 500ml", price: 9.00, category: "bebidas", desc: "Natural e gelado.", image: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=200" },
         { id: 13, name: "Água Mineral 500ml", price: 4.00, category: "bebidas", desc: "Com ou sem gás.", image: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=200" },
@@ -585,7 +585,6 @@
         const deliveryType = document.getElementById('delivery-type').value;
         let totalFinal = subtotal - discountValue;
         
-        // SOMA A TAXA NO TOTAL SE FOR DELIVERY
         if(deliveryType === 'delivery') {
             totalFinal += TAXA_ENTREGA;
             document.getElementById('delivery-tax-display').style.display = 'flex';
@@ -651,22 +650,35 @@
         const type = document.getElementById('delivery-type').value;
         document.getElementById('fields-retirada').style.display = (type === 'retirada') ? 'block' : 'none';
         document.getElementById('fields-delivery').style.display = (type === 'delivery') ? 'block' : 'none';
-        updateUI(); // ATUALIZA O TOTAL QUANDO MUDA O TIPO DE ENTREGA
+        updateUI();
+    }
+
+    function enviarParaPlanilha(dados) {
+        // SUBSTITUA OS IDs (entry.XXXXX) PELOS IDs DO SEU GOOGLE FORMS
+        const FORM_URL = "SUA_URL_DO_GOOGLE_FORMS/formResponse";
+        const formData = new FormData();
+        
+        formData.append("entry.123456789", dados.tipo); // ID Tipo Entrega
+        formData.append("entry.111222333", dados.cliente_nome || "N/A"); // ID Nome
+        formData.append("entry.444555666", dados.cliente_cpf); // ID CPF
+        formData.append("entry.777888999", dados.endereco_completo || "N/A"); // ID Endereço
+        formData.append("entry.000111222", dados.resumo_itens); // ID Pedido
+        formData.append("entry.333444555", dados.total); // ID Total
+
+        fetch(FORM_URL, {
+            method: "POST",
+            mode: "no-cors",
+            body: formData
+        }).then(() => console.log("Dados enviados para planilha."));
     }
 
     function enviarPedidoAoPDV(dadosDoPedido) {
         const URL_PDV = 'HTTPS://API.SEUPDV.COM.BR/PEDIDOS'; 
-
         fetch(URL_PDV, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dadosDoPedido)
-        })
-        .then(response => {
-            if (response.ok) console.log("Pedido integrado ao PDV com sucesso.");
-            else console.error("Erro ao integrar com PDV.");
-        })
-        .catch(error => console.error("Falha na conexão com PDV:", error));
+        }).catch(e => console.log("PDV Offline"));
     }
 
     function sendWhatsApp() {
@@ -675,13 +687,24 @@
 
         const type = document.getElementById('delivery-type').value;
         let cpfValue = "";
+        let nome = "";
+        let bairro = "";
+        let rua = "";
+        let num = "";
+        let comp = "";
 
         if(type === 'retirada') {
             cpfValue = document.getElementById('cpf-retirada').value;
             if(!validarCPF(cpfValue)) { alert("CPF inválido!"); return; }
-        }
-        if(type === 'delivery') {
+        } else if(type === 'delivery') {
+            nome = document.getElementById('dev-nome').value;
             cpfValue = document.getElementById('dev-cpf').value;
+            bairro = document.getElementById('dev-bairro').value;
+            rua = document.getElementById('dev-rua').value;
+            num = document.getElementById('dev-num').value;
+            comp = document.getElementById('dev-comp').value;
+
+            if(!nome || !bairro || !rua || !num) { alert("Preencha todos os campos obrigatórios!"); return; }
             if(!validarCPF(cpfValue)) { alert("CPF inválido!"); return; }
         }
 
@@ -690,22 +713,19 @@
         if(type === 'delivery') totalFinal += TAXA_ENTREGA;
         
         const totalFormatado = totalFinal.toFixed(2);
-        
-        let linkPagamento = linksDePagamentoFixos[totalFormatado] || "#Estamos gerando seu link de pagamento, só um momento.";
+        let linkPagamento = linksDePagamentoFixos[totalFormatado] || "Link em geração...";
 
-        const dadosParaPDV = {
-            origem: "Cardápio Digital BeeFood",
+        let resumoItens = cart.map(i => `${i.quantity}x ${i.name}`).join(', ');
+
+        // ENVIO PLANILHA
+        enviarParaPlanilha({
             tipo: type,
+            cliente_nome: nome,
             cliente_cpf: cpfValue,
-            itens: cart,
-            total: totalFormatado,
-            desconto: discountValue.toFixed(2),
-            cupom: appliedCoupon,
-            taxa_entrega: type === 'delivery' ? 10.00 : 0,
-            link_pago: linkPagamento
-        };
-
-        enviarPedidoAoPDV(dadosParaPDV);
+            endereco_completo: type === 'delivery' ? `${rua}, ${num} - ${bairro} (${comp})` : "N/A",
+            resumo_itens: resumoItens,
+            total: totalFormatado
+        });
 
         let msg = "🐝 *NOVO PEDIDO BEEFOOD*\n------------------\n";
         cart.forEach(i => msg += `*${i.quantity}x* ${i.name}\n`);
@@ -720,12 +740,13 @@
         if(type === 'mesa') msg += `\n📍 Mesa 5`;
         else if(type === 'retirada') msg += `\n🏪 Retirada\nCPF: ${cpfValue}`;
         else if(type === 'delivery') {
-            msg += `\n🏠 Delivery\nCliente: ${document.getElementById('dev-nome').value}\nCPF: ${cpfValue}`;
-            msg += `\nEnd: ${document.getElementById('dev-rua').value}, ${document.getElementById('dev-num').value}`;
+            msg += `\n🏠 *DADOS DELIVERY*`;
+            msg += `\nCliente: ${nome}`;
+            msg += `\nCPF: ${cpfValue}`;
+            msg += `\nRua: ${rua}, Nº ${num}`;
+            msg += `\nBairro: ${bairro}`;
+            if(comp) msg += `\nComplemento: ${comp}`;
         }
-
-        // Limpar carrinho após pedido se desejar:
-        // cart = []; localStorage.removeItem('cart'); updateUI();
 
         window.open(`https://wa.me/5562995679219?text=${encodeURIComponent(msg)}`);
     }
@@ -739,7 +760,8 @@
 
     renderMenu(menuData);
     checkStoreStatus();
-    updateUI(); // Chama updateUI no carregamento para refletir dados salvos
+    updateUI();
 </script>
 </body>
 </html>
+

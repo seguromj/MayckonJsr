@@ -365,6 +365,7 @@
             <div class="form-group">
                 <label>CPF*</label>
                 <input type="text" id="cpf-retirada" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCPF(this)">
+                <div class="obs">CPF para retirada com segurança.</div>
             </div>
         </div>
 
@@ -383,7 +384,7 @@
 
 <script>
     let isStoreOpen = false;
-    let cart = [];
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let discountValue = 0;
     let appliedCoupon = "";
     const TAXA_ENTREGA = 10.00;
@@ -481,7 +482,17 @@
         { id: 1, name: "Bee Burguer Especial", price: 28.90, category: "lanches", desc: "Artesanal 180g com molho de mel.", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=200" },
         { id: 2, name: "Combo Colmeia", price: 42.00, category: "lanches", desc: "Burguer duplo + Batata + Refri.", image: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=200" },
         { id: 3, name: "Batata Frita G", price: 18.00, category: "acompanhamentos", desc: "Crocante com sal e páprica.", image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=200" },
-        { id: 5, name: "Coca Cola Lata 350ml", price: 6.00, category: "bebidas", desc: "Coca, Fanta ou Guaraná.", image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200" }
+        { id: 5, name: "Coca Cola Lata 350ml", price: 6.00, category: "bebidas", desc: "Coca, Fanta ou Guaraná.", image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=200" },
+        { id: 6, name: "X-Bee Bacon", price: 32.90, category: "lanches", desc: "Artesanal, muito bacon e queijo.", image: "https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=200" },
+        { id: 7, name: "Bee Chicken", price: 25.00, category: "lanches", desc: "Frango empanado e maionese verde.", image: "https://images.unsplash.com/photo-1610614819513-58e34989848b?w=200" },
+        { id: 8, name: "Bee Veggie", price: 29.90, category: "lanches", desc: "Hambúrguer de grão de bico.", image: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=200" },
+        { id: 9, name: "Nuggets (10 unidades)", price: 15.00, category: "acompanhamentos", desc: "Acompanha molho barbecue.", image: "https://images.unsplash.com/photo-1562967914-608f82629710?w=200" },
+        { id: 10, name: "Anéis de Cebola", price: 16.50, category: "acompanhamentos", desc: "Crocantes e sequinhos.", image: "https://images.unsplash.com/photo-1639024471283-035188835118?w=200" },
+        { id: 11, name: "Batata com Cheddar", price: 22.00, category: "acompanhamentos", desc: "Muita cobertura de queijo.", image: "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=200" },
+        { id: 12, name: "Suco de Laranja 500ml", price: 9.00, category: "bebidas", desc: "Natural e gelado.", image: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=200" },
+        { id: 13, name: "Água Mineral 500ml", price: 4.00, category: "bebidas", desc: "Com ou sem gás.", image: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=200" },
+        { id: 14, name: "Cerveja Heineken Long", price: 12.00, category: "bebidas", desc: "Long neck 330ml.", image: "https://images.unsplash.com/photo-1618885472179-5e474019f2a9?w=200" },
+        { id: 15, name: "Milkshake Chocolate", price: 15.90, category: "bebidas", desc: "400ml de pura cremosidade.", image: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=200" }
     ];
 
     function renderMenu(items) {
@@ -505,6 +516,7 @@
         const item = cart.find(i => i.id === id);
         if (item) item.quantity++;
         else cart.push({ ...menuData.find(p => p.id === id), quantity: 1 });
+        localStorage.setItem('cart', JSON.stringify(cart));
         updateUI();
     }
 
@@ -514,12 +526,14 @@
             item.quantity += delta;
             if (item.quantity <= 0) cart = cart.filter(i => i.id !== id);
         }
+        localStorage.setItem('cart', JSON.stringify(cart));
         updateUI();
         renderCartItems();
     }
 
     function removeFromCart(id) {
         cart = cart.filter(i => i.id !== id);
+        localStorage.setItem('cart', JSON.stringify(cart));
         updateUI();
         renderCartItems();
         if (cart.length === 0) toggleCart();
@@ -710,6 +724,9 @@
             msg += `\nEnd: ${document.getElementById('dev-rua').value}, ${document.getElementById('dev-num').value}`;
         }
 
+        // Limpar carrinho após pedido se desejar:
+        // cart = []; localStorage.removeItem('cart'); updateUI();
+
         window.open(`https://wa.me/5562995679219?text=${encodeURIComponent(msg)}`);
     }
 
@@ -722,6 +739,7 @@
 
     renderMenu(menuData);
     checkStoreStatus();
+    updateUI(); // Chama updateUI no carregamento para refletir dados salvos
 </script>
 </body>
 </html>

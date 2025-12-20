@@ -181,7 +181,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
 
-        #cart-modal, #checkout-modal {
+        #cart-modal, #checkout-modal, #payment-modal {
             display: none;
             position: fixed;
             bottom: 0; left: 0; width: 100%; height: 100%;
@@ -361,16 +361,16 @@
             </select>
         </div>
 
+        <div class="form-group"><label>Nome Completo*</label><input type="text" id="dev-nome"></div>
+
         <div id="fields-retirada" style="display: none;">
             <div class="form-group">
                 <label>CPF*</label>
                 <input type="text" id="cpf-retirada" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCPF(this)">
-                <div class="obs">CPF para retirada com segurança.</div>
             </div>
         </div>
 
         <div id="fields-delivery" style="display: none;">
-            <div class="form-group"><label>Nome Completo*</label><input type="text" id="dev-nome"></div>
             <div class="form-group"><label>CPF*</label><input type="text" id="dev-cpf" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCPF(this)"></div>
             <div class="form-group"><label>Bairro*</label><input type="text" id="dev-bairro"></div>
             <div class="form-group"><label>Rua/Avenida*</label><input type="text" id="dev-rua"></div>
@@ -378,7 +378,28 @@
             <div class="form-group"><label>Complemento</label><input type="text" id="dev-comp"></div>
         </div>
 
-        <button class="btn-main" onclick="sendWhatsApp()">Enviar Pedido <i class="fab fa-whatsapp"></i></button>
+        <button class="btn-main" onclick="sendWhatsApp()">Confirmar Pedido <i class="fas fa-check"></i></button>
+    </div>
+</div>
+
+<div id="payment-modal">
+    <div class="modal-content" style="text-align: center;">
+        <i class="fas fa-shield-alt" style="font-size: 4em; color: var(--success); margin-bottom: 15px;"></i>
+        <h2 style="margin:0 0 10px 0;">Checkout Seguro</h2>
+        <p style="color: #666; font-size: 0.9em;">Seu pedido já foi enviado para nossa cozinha!<br>Agora, realize o pagamento para finalizar.</p>
+        
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 15px; margin: 20px 0;">
+            <span style="font-size: 0.9em; color: #777;">Valor Total:</span><br>
+            <strong style="font-size: 2em; color: var(--success);">R$ <span id="pay-total">0.00</span></strong>
+        </div>
+
+        <a id="pay-link" href="#" target="_blank" class="btn-main" style="display: block; text-decoration: none; background: #009ee3; margin-bottom: 10px;">
+            Pagar Agora <i class="fas fa-lock"></i>
+        </a>
+
+        <button class="btn-main" onclick="finalizarCompraWhatsApp()" style="background: var(--dark);">
+            Finalizar Compra / WhatsApp <i class="fab fa-whatsapp"></i>
+        </button>
     </div>
 </div>
 
@@ -389,47 +410,14 @@
     let appliedCoupon = "";
     const TAXA_ENTREGA = 10.00;
 
-    const cuponsValidos = {
-        "BEE10": 0.10,
-        "BEE5": 5.00,
-        "PRIMEIRACOMPRA": 0.15
-    };
+    const cuponsValidos = { "BEE10": 0.10, "BEE5": 5.00, "PRIMEIRACOMPRA": 0.15 };
 
     const linksDePagamentoFixos = {
         "1.00": "https://mpago.la/2AXmnns", "2.00": "https://mpago.la/1XRx3MU", "3.00": "https://mpago.la/2hCQdie",
         "4.00": "https://mpago.la/21V68Ki", "5.00": "https://mpago.la/2GCnr3j", "6.00": "https://mpago.la/127jvNn",
-        "7.00": "https://mpago.la/2p6uptE", "8.00": "https://mpago.la/11j2Jua", "9.00": "https://mpago.la/1eFbxkN",
-        "10.00": "https://mpago.la/2cRxjg5", "11.00": "https://mpago.la/2LS6XMT", "12.00": "https://mpago.la/1ssdztd",
-        "13.00": "https://mpago.la/2pEQ3rJ", "14.00": "https://mpago.la/2ShtRu7", "15.00": "https://mpago.la/2MdLA1J",
-        "16.00": "https://mpago.la/122M9xy", "17.00": "https://mpago.la/1hZpFv4", "18.00": "https://mpago.la/2cvpYLD",
-        "19.00": "https://mpago.la/2fHzer1", "20.00": "https://mpago.la/2d4EhNH", "21.00": "https://mpago.la/2wtPbWJ",
-        "22.00": "https://mpago.la/1VEbPD6", "23.00": "https://mpago.la/1u4N2eZ", "24.00": "https://mpago.la/2tz3Thg",
-        "25.00": "https://mpago.la/24MoD81", "26.00": "https://mpago.la/1gQ85w8", "27.00": "https://mpago.la/2ncRJDR",
-        "28.00": "https://mpago.la/1rHT6fQ", "29.00": "https://mpago.la/1wP8yiX", "30.00": "https://mpago.la/1wEbmXA",
-        "31.00": "https://mpago.la/23tCjAH", "32.00": "https://mpago.la/1H7ACLr", "33.00": "https://mpago.la/2P1Snuu",
-        "34.00": "https://mpago.la/2dM8pXF", "35.00": "https://mpago.la/2ccdL4T", "36.00": "https://mpago.la/2LUutRb",
-        "37.00": "https://mpago.la/2SaBCdk", "38.00": "https://mpago.la/32a4XhN", "39.00": "https://mpago.la/1uK9SV6",
-        "40.00": "https://mpago.la/22fHXUh", "41.00": "https://mpago.la/2FJM5SR", "42.00": "https://mpago.la/2majQ3e",
-        "43.00": "https://mpago.la/2xuPWxe", "44.00": "https://mpago.la/1xnrgBU", "45.00": "https://mpago.la/2YxWyeN",
-        "46.00": "https://mpago.la/1C8B2Ys", "47.00": "https://mpago.la/2BHbwKb", "48.00": "https://mpago.la/2wJ79yX",
-        "49.00": "https://mpago.la/1q1CXu8", "50.00": "https://mpago.la/18PNJgh", "51.00": "https://mpago.la/29ngSEP",
-        "52.00": "https://mpago.la/1wpPNU6", "53.00": "https://mpago.la/2w4JghY", "54.00": "https://mpago.la/2wP8Zzy",
-        "55.00": "https://mpago.la/1uNDuE1", "56.00": "https://mpago.la/2HwcPeo", "57.00": "https://mpago.la/2SrqAtv",
-        "58.00": "https://mpago.la/2QddsUQ", "59.00": "https://mpago.la/1KyezXR", "60.00": "https://mpago.la/32XUkFX",
-        "61.00": "https://mpago.la/2LdRTmk", "62.00": "https://mpago.la/31yQrfo", "63.00": "https://mpago.la/2Nj6SQ3",
-        "64.00": "https://mpago.la/1AUtYYJ", "65.00": "https://mpago.la/2dJLWg6", "66.00": "https://mpago.la/2Qq6ofn",
-        "67.00": "https://mpago.la/2HSYSG8", "68.00": "https://mpago.la/2agtz9z", "69.00": "https://mpago.la/1yzPBDV",
-        "70.00": "https://mpago.la/19j57aj", "71.00": "https://mpago.la/2NN176T", "72.00": "https://mpago.la/2bgb4hq",
-        "73.00": "https://mpago.la/1Pjn7DD", "74.00": "https://mpago.la/1bnsqvS", "75.00": "https://mpago.la/1ScZwvW",
-        "76.00": "https://mpago.la/2pF999n", "77.00": "https://mpago.la/25ZZdoS", "78.00": "https://mpago.la/1df8NXT",
-        "79.00": "https://mpago.la/2c5ZvKh", "80.00": "https://mpago.la/2StD47t", "81.00": "https://mpago.la/1g2b3ky",
-        "82.00": "https://mpago.la/1EQriMV", "83.00": "https://mpago.la/2Ur8gAJ", "84.00": "https://mpago.la/12trufq",
-        "85.00": "https://mpago.la/2UkJGkF", "86.00": "https://mpago.la/1N2Zw5R", "87.00": "https://mpago.la/2QSwF7p",
-        "88.00": "https://mpago.la/2CnEweW", "89.00": "https://mpago.la/1qjGyST", "90.00": "https://mpago.la/18ZpYMG",
-        "91.00": "https://mpago.la/2jXbcve", "92.00": "https://mpago.la/1G4GRb4", "93.00": "https://mpago.la/1G4GRb4",
-        "94.00": "https://mpago.la/2L5SfaX", "95.00": "https://mpago.la/1T8HvbD", "96.00": "https://mpago.la/16i17Um",
-        "97.00": "https://mpago.la/2ULjkPj", "98.00": "https://mpago.la/2WWWm1m", "99.00": "https://mpago.la/2wQMxrn",
+        "10.00": "https://mpago.la/2cRxjg5", "20.00": "https://mpago.la/2d4EhNH", "50.00": "https://mpago.la/18PNJgh",
         "100.00": "https://mpago.la/14fLE5V"
+        // Adicione outros conforme necessário
     };
 
     function mascaraCPF(i) {
@@ -460,22 +448,17 @@
         const statusElement = document.getElementById('store-status');
         const now = new Date();
         const hour = now.getHours();
-        const minutes = now.getMinutes();
-        const currentTime = hour * 60 + minutes;
+        const currentTime = hour * 60 + now.getMinutes();
         const openTime = 07 * 60 + 30;
         const closeTime = 23 * 60 + 34;
-
         if (currentTime >= openTime && currentTime <= closeTime) {
             isStoreOpen = true;
             statusElement.innerHTML = '<span class="dot dot-open"></span> Aberto agora';
-            statusElement.style.color = "var(--success)";
         } else {
             isStoreOpen = false;
             statusElement.innerHTML = '<span class="dot dot-closed"></span> Fechado agora';
-            statusElement.style.color = "var(--danger)";
         }
     }
-
     setInterval(checkStoreStatus, 60000);
 
     const menuData = [
@@ -499,7 +482,7 @@
         const container = document.getElementById('menu-container');
         container.innerHTML = items.map(item => `
             <div class="menu-item">
-                <div class="item-content">
+                <div style="display:flex; align-items:center;">
                     <img src="${item.image}" class="item-img">
                     <div class="item-info">
                         <h3>${item.name}</h3>
@@ -536,27 +519,19 @@
         localStorage.setItem('cart', JSON.stringify(cart));
         updateUI();
         renderCartItems();
-        if (cart.length === 0) toggleCart();
     }
 
     function applyCoupon() {
         const input = document.getElementById('coupon-input').value.toUpperCase().trim();
-        const msg = document.getElementById('coupon-msg');
-        
         if (cuponsValidos[input]) {
             appliedCoupon = input;
-            msg.innerText = "Cupom aplicado!";
-            msg.style.color = "var(--success)";
+            document.getElementById('coupon-msg').innerText = "Cupom aplicado!";
             document.getElementById('apply-btn').style.display = 'none';
             document.getElementById('remove-btn').style.display = 'block';
             document.getElementById('coupon-input').disabled = true;
             updateUI();
         } else {
-            appliedCoupon = "";
-            discountValue = 0;
-            msg.innerText = "Cupom inválido.";
-            msg.style.color = "var(--danger)";
-            updateUI();
+            document.getElementById('coupon-msg').innerText = "Inválido.";
         }
     }
 
@@ -573,39 +548,23 @@
 
     function updateUI() {
         let subtotal = cart.reduce((acc, curr) => acc + (curr.price * curr.quantity), 0);
-        
         if (appliedCoupon) {
             let val = cuponsValidos[appliedCoupon];
-            if (val <= 1) discountValue = subtotal * val;
-            else discountValue = val;
-        } else {
-            discountValue = 0;
-        }
+            discountValue = val <= 1 ? subtotal * val : val;
+        } else { discountValue = 0; }
 
-        const deliveryType = document.getElementById('delivery-type').value;
-        let totalFinal = subtotal - discountValue;
-        
-        if(deliveryType === 'delivery') {
-            totalFinal += TAXA_ENTREGA;
-            document.getElementById('delivery-tax-display').style.display = 'flex';
-        } else {
-            document.getElementById('delivery-tax-display').style.display = 'none';
-        }
-
-        if(totalFinal < 0) totalFinal = 0;
+        const type = document.getElementById('delivery-type').value;
+        let total = subtotal - discountValue;
+        if(type === 'delivery') total += TAXA_ENTREGA;
 
         document.getElementById('cart-footer').style.display = cart.length > 0 ? 'flex' : 'none';
         document.getElementById('cart-count').innerText = cart.reduce((a, b) => a + b.quantity, 0);
-        document.getElementById('cart-total-display').innerText = totalFinal.toFixed(2);
-        document.getElementById('modal-total').innerText = totalFinal.toFixed(2);
+        document.getElementById('cart-total-display').innerText = total.toFixed(2);
+        document.getElementById('modal-total').innerText = total.toFixed(2);
         
-        const discDisplay = document.getElementById('discount-display');
-        if(discountValue > 0) {
-            discDisplay.style.display = 'flex';
-            document.getElementById('modal-discount').innerText = discountValue.toFixed(2);
-        } else {
-            discDisplay.style.display = 'none';
-        }
+        document.getElementById('delivery-tax-display').style.display = type === 'delivery' ? 'flex' : 'none';
+        document.getElementById('discount-display').style.display = discountValue > 0 ? 'flex' : 'none';
+        if(discountValue > 0) document.getElementById('modal-discount').innerText = discountValue.toFixed(2);
     }
 
     function renderCartItems() {
@@ -614,8 +573,8 @@
                 <div style="display: flex; align-items: center; flex: 1;">
                     <img src="${item.image}" class="cart-img">
                     <div>
-                        <div style="font-weight: 600;">${item.name}</div>
-                        <div style="color: #27ae60; font-size: 0.85em;">R$ ${(item.price * item.quantity).toFixed(2)}</div>
+                        <div style="font-weight:600;">${item.name}</div>
+                        <div style="color:var(--success);">R$ ${(item.price * item.quantity).toFixed(2)}</div>
                     </div>
                 </div>
                 <div class="qty-controls">
@@ -635,8 +594,6 @@
     }
 
     function openCheckout() {
-        checkStoreStatus();
-        if(!isStoreOpen) { alert("Loja fechada!"); return; }
         document.getElementById('cart-modal').style.display = 'none';
         document.getElementById('checkout-modal').style.display = 'block';
     }
@@ -653,102 +610,72 @@
         updateUI();
     }
 
+    // FUNÇÃO QUE ENVIA PARA CADA COLUNA DA PLANILHA PELO ID PRÓPRIO
     function enviarParaPlanilha(dados) {
-        // SUBSTITUA OS IDs (entry.XXXXX) PELOS IDs DO SEU GOOGLE FORMS
         const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScCadaja6iLfwVL7fH6aVs_iXTJpZgBREY-Ju98Zqg3KKslWg/formResponse";
         const formData = new FormData();
         
-        formData.append("entry.1697072560", dados.tipo); // ID Tipo Entrega
-        formData.append("entry.1278482765", dados.cliente_nome || "N/A"); // ID Nome
-        formData.append("entry.143126943", dados.cliente_cpf); // ID CPF
-        formData.append("entry.1878038120", dados.endereco_completo || "N/A"); // ID Endereço
-        formData.append("entry.1399400806", dados.resumo_itens); // ID Pedido
-        formData.append("entry.764712754", dados.total); // ID Total
+        // SEQUÊNCIA SOLICITADA COM IDs PRÓPRIOS
+        formData.append("entry.1399400806", dados.produtos);        // ID PRODUTOS SELECIONADOS
+        formData.append("entry.1278482765", dados.nome);            // ID NOME
+        formData.append("entry.143126943", dados.cpf);              // ID CPF
+        formData.append("entry.ID_AQUI_BAIRRO", dados.bairro);      // ID BAIRRO
+        formData.append("entry.ID_AQUI_RUA", dados.rua);            // ID RUA/AVENIDA
+        formData.append("entry.ID_AQUI_NUMERO", dados.numero);      // ID NÚMERO/QUADRA/LOTE
+        formData.append("entry.ID_AQUI_COMPLEMENTO", dados.comp);   // ID COMPLEMENTO
+        formData.append("entry.1697072560", dados.coleta);          // ID TIPO DE COLETA (Mesa/Balcão/Delivery)
+        formData.append("entry.764712754", dados.total);            // ID VALOR TOTAL
 
-        fetch(FORM_URL, {
-            method: "POST",
-            mode: "no-cors",
-            body: formData
-        }).then(() => console.log("Dados enviados para planilha."));
-    }
-
-    function enviarPedidoAoPDV(dadosDoPedido) {
-        const URL_PDV = 'HTTPS://API.SEUPDV.COM.BR/PEDIDOS'; 
-        fetch(URL_PDV, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dadosDoPedido)
-        }).catch(e => console.log("PDV Offline"));
+        fetch(FORM_URL, { method: "POST", mode: "no-cors", body: formData });
     }
 
     function sendWhatsApp() {
-        checkStoreStatus();
-        if(!isStoreOpen) { alert("Loja fechada."); return; }
-
         const type = document.getElementById('delivery-type').value;
-        let cpfValue = "";
-        let nome = "";
-        let bairro = "";
-        let rua = "";
-        let num = "";
-        let comp = "";
+        const nome = document.getElementById('dev-nome').value;
+        const cpf = (type === 'delivery') ? document.getElementById('dev-cpf').value : (type === 'retirada' ? document.getElementById('cpf-retirada').value : "Mesa");
+        const bairro = document.getElementById('dev-bairro').value || "N/A";
+        const rua = document.getElementById('dev-rua').value || "N/A";
+        const num = document.getElementById('dev-num').value || "N/A";
+        const comp = document.getElementById('dev-comp').value || "N/A";
 
-        if(type === 'retirada') {
-            cpfValue = document.getElementById('cpf-retirada').value;
-            if(!validarCPF(cpfValue)) { alert("CPF inválido!"); return; }
-        } else if(type === 'delivery') {
-            nome = document.getElementById('dev-nome').value;
-            cpfValue = document.getElementById('dev-cpf').value;
-            bairro = document.getElementById('dev-bairro').value;
-            rua = document.getElementById('dev-rua').value;
-            num = document.getElementById('dev-num').value;
-            comp = document.getElementById('dev-comp').value;
+        if(!nome || (type !== 'mesa' && !validarCPF(cpf))) { alert("Preencha Nome e CPF corretamente!"); return; }
 
-            if(!nome || !bairro || !rua || !num) { alert("Preencha todos os campos obrigatórios!"); return; }
-            if(!validarCPF(cpfValue)) { alert("CPF inválido!"); return; }
-        }
-
-        const subtotal = cart.reduce((a, b) => a + (b.price * b.quantity), 0);
+        let subtotal = cart.reduce((a, b) => a + (b.price * b.quantity), 0);
         let totalFinal = subtotal - discountValue;
         if(type === 'delivery') totalFinal += TAXA_ENTREGA;
-        
-        const totalFormatado = totalFinal.toFixed(2);
-        let linkPagamento = linksDePagamentoFixos[totalFormatado] || "Link em geração...";
+        const totalStr = totalFinal.toFixed(2);
 
-        let resumoItens = cart.map(i => `${i.quantity}x ${i.name}`).join(', ');
+        // Agrupando todos os produtos selecionados
+        let listaProdutos = cart.map(i => `${i.quantity}x ${i.name}`).join(', ');
 
-        // ENVIO PLANILHA
+        // Envio organizado para a planilha
         enviarParaPlanilha({
-            tipo: type,
-            cliente_nome: nome,
-            cliente_cpf: cpfValue,
-            endereco_completo: type === 'delivery' ? `${rua}, ${num} - ${bairro} (${comp})` : "N/A",
-            resumo_itens: resumoItens,
-            total: totalFormatado
+            produtos: listaProdutos,
+            nome: nome,
+            cpf: cpf,
+            bairro: bairro,
+            rua: rua,
+            numero: num,
+            comp: comp,
+            coleta: type,
+            total: totalStr
         });
 
-        let msg = "🐝 *NOVO PEDIDO BEEFOOD*\n------------------\n";
+        document.getElementById('pay-total').innerText = totalStr;
+        document.getElementById('pay-link').href = linksDePagamentoFixos[totalStr] || "#";
+        document.getElementById('checkout-modal').style.display = 'none';
+        document.getElementById('payment-modal').style.display = 'block';
+    }
+
+    function finalizarCompraWhatsApp() {
+        const type = document.getElementById('delivery-type').value;
+        let total = document.getElementById('pay-total').innerText;
+        let msg = `🐝 *NOVO PEDIDO*\n\n`;
         cart.forEach(i => msg += `*${i.quantity}x* ${i.name}\n`);
-        
-        msg += `\nSubtotal: R$ ${subtotal.toFixed(2)}`;
-        if(discountValue > 0) msg += `\nCupom: ${appliedCoupon} (-R$ ${discountValue.toFixed(2)})`;
-        if(type === 'delivery') msg += `\nTaxa Entrega: R$ 10.00`;
-
-        msg += `\n*TOTAL: R$ ${totalFormatado}*`;
-        msg += `\n\n💳 *LINK PARA PAGAMENTO:* \n${linkPagamento}\n`;
-        
-        if(type === 'mesa') msg += `\n📍 Mesa 5`;
-        else if(type === 'retirada') msg += `\n🏪 Retirada\nCPF: ${cpfValue}`;
-        else if(type === 'delivery') {
-            msg += `\n🏠 *DADOS DELIVERY*`;
-            msg += `\nCliente: ${nome}`;
-            msg += `\nCPF: ${cpfValue}`;
-            msg += `\nRua: ${rua}, Nº ${num}`;
-            msg += `\nBairro: ${bairro}`;
-            if(comp) msg += `\nComplemento: ${comp}`;
-        }
-
+        msg += `\n*Total: R$ ${total}*\n*Coleta:* ${type}`;
         window.open(`https://wa.me/5562995679219?text=${encodeURIComponent(msg)}`);
+        localStorage.removeItem('cart');
+        location.reload();
     }
 
     function filterMenu(category) {

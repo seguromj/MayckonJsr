@@ -616,15 +616,15 @@
         const formData = new FormData();
         
         // SEQUÊNCIA SOLICITADA COM IDs PRÓPRIOS
-        formData.append("entry.1399400806", dados.produtos);        // ID PRODUTOS SELECIONADOS
-        formData.append("entry.1278482765", dados.nome);            // ID NOME
-        formData.append("entry.143126943", dados.cpf);              // ID CPF
-        formData.append("entry.ID_AQUI_BAIRRO", dados.bairro);      // ID BAIRRO
-        formData.append("entry.ID_AQUI_RUA", dados.rua);            // ID RUA/AVENIDA
-        formData.append("entry.ID_AQUI_NUMERO", dados.numero);      // ID NÚMERO/QUADRA/LOTE
-        formData.append("entry.ID_AQUI_COMPLEMENTO", dados.comp);   // ID COMPLEMENTO
-        formData.append("entry.1697072560", dados.coleta);          // ID TIPO DE COLETA (Mesa/Balcão/Delivery)
-        formData.append("entry.764712754", dados.total);            // ID VALOR TOTAL
+        formData.append("entry.62718261", dados.produtos);           // ID PRODUTOS SELECIONADOS
+        formData.append("entry.1278482765", dados.nome);             // ID NOME
+        formData.append("entry.143126943", dados.cpf);               // ID CPF
+        formData.append("entry.1878038120", dados.bairro);           // ID BAIRRO
+        formData.append("entry.1399400806", dados.rua);              // ID RUA/AVENIDA
+        formData.append("entry.764712754", dados.numero);            // ID NÚMERO/QUADRA/LOTE
+        formData.append("entry.1697072560", dados.comp);             // ID COMPLEMENTO
+        formData.append("entry.1857638858", dados.coleta);           // ID TIPO DE COLETA (Mesa/Balcão/Delivery)
+        formData.append("entry.1235511550", dados.total);            // ID VALOR TOTAL
 
         fetch(FORM_URL, { method: "POST", mode: "no-cors", body: formData });
     }
